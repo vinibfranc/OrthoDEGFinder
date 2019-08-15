@@ -1,0 +1,110 @@
+{% load static from staticfiles %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Customized CSS-->
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block titulo %}{% endblock %}</title>
+
+</head>
+<body>
+    <!--HEADER-->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">DGE Platform</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Organisms</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Genes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Annotation</a>
+              </li>
+          </ul>
+          <form class="form-inline mt-2 mt-md-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+    </nav>
+
+    <main role="main">
+        {% block conteudo %}
+        {% endblock %}
+    </main>
+
+    <!--FOOTER-->
+    <footer class="footer-distributed">
+        <div class="footer-left">
+            <!--<h3>Company<span>logo</span></h3>-->
+            <img src="{% static 'img/logo-ufrgs.png' %}" width="100">
+            <img src="{% static 'img/logo-ubtec.jpg' %}" width="100">
+            <img src="">
+            <p class="footer-links">
+                <a href="/">Home</a>
+                ·
+                <a href="http://www.cbiot.ufrgs.br/" target="_blank">CBiot</a>
+                ·
+                <a href="https://www.ubtec.net.br/" target="_blank">UBTEC</a>
+            </p>
+            <p class="footer-company-name">Developed by Vinícius Franceschi at UBTEC &copy; 2019</p>
+        </div>
+        <div class="footer-center">
+            <div>
+                <i class="fa fa-map-marker"></i>
+                <p><span>Av. Bento Gonçalves, 9500 - Agronomia</span> Porto Alegre - RS, Brazil</p>
+            </div>
+            <div>
+                <i class="fa fa-phone"></i>
+                <p>+55 51 3308-6087</p>
+            </div>
+            <div>
+                <i class="fa fa-envelope"></i>
+                <p><a href="mailto:diretor@cbiot.ufrgs.br">diretor@cbiot.ufrgs.br</a></p>
+            </div>
+        </div>
+
+        <div class="footer-right">
+            <p class="footer-company-about">
+                <span>Unidade de Biologia Teórica e Computacional</span>
+                CBiot is a Center for Interdisciplinary Studies at UFRGS, where a large part of the activities of the Biotechnology Undergraduate Program and the Postgraduate Program in Cell and Molecular Biology are held. UBTEC is the unit where computational analyzes are performed to process large quantities of biological data, such as genomes, metagenomes and transcriptomes.
+            </p>
+            <div class="footer-icons">
+                <a href="https://www.facebook.com/ubtec.ufrgs/" target="_blank"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-linkedin"></i></a>
+                <a href=""><i class="fa fa-github"></i></a>
+            </div>
+        </div>
+	</footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script>
+        $(function(){
+            $('.navbar-nav a').each(function(){
+                if ($(this).prop('href') == window.location.href) {
+                    $( this ).parent( 'li' ).addClass( 'active' );
+                }
+            });
+        });
+    </script>
+</body>
+</html>
