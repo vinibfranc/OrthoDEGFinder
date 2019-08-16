@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 
 # Application definition
 
@@ -107,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'pt-br'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'America/Sao_Paulo'
 
