@@ -1,4 +1,5 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 from .models import Organism, RealGene, AnnotedGene, FunctionalAnnotation
 
 admin.site.site_header = 'Fungi Orthologs DE Platform'
@@ -16,10 +17,10 @@ class RealGeneAdmin(admin.ModelAdmin):
     list_display = ('accession_number', 'locus_tag')
     search_fields = ('accession_number','locus_tag')
 @admin.register(AnnotedGene)
-class AnnotedGeneAdmin(admin.ModelAdmin):
+class AnnotedGeneAdmin(ImportExportModelAdmin):
     list_display = ('de_gene', 'log_fc', 'log_cpm', 'f', 'p_value', 'fdr')
     search_fields = ('de_gene', 'log_fc', 'p_value')
 @admin.register(FunctionalAnnotation)
-class FunctionalAnnotationAdmin(admin.ModelAdmin):
+class FunctionalAnnotationAdmin(ImportExportModelAdmin):
     list_display = ('protein_id', 'go_id', 'ontology', 'description')
     search_fields = ('protein_id', 'go_id', 'ontology', 'description')

@@ -1,5 +1,4 @@
 from django.db import models
-# from adaptor.model import CsvModel
 
 class Organism(models.Model):
     taxid = models.IntegerField(verbose_name="Taxonomic ID")
@@ -18,7 +17,6 @@ class Organism(models.Model):
         ordering = ['taxid']
         verbose_name = 'Organism'
         verbose_name_plural = 'Organisms'
-        managed = False
 
     def __str__(self):
         return self.genus+" "+self.species+" "+self.lineage_strain
@@ -27,13 +25,12 @@ class RealGene(models.Model):
     accession_number = models.CharField(max_length=20) 
     locus_tag = models.CharField(max_length=20)
     annotation = models.ForeignKey('FunctionalAnnotation', on_delete=models.CASCADE, null=True)
-    #de_genes = models.FileField(verbose_name="Differentially expressed genes", upload_to="", null=True)
+    de_genes = models.FileField(verbose_name="Differentially expressed genes", upload_to="", null=True)
 
     class Meta:
         ordering = ['accession_number']
         verbose_name = 'Real gene'
         verbose_name_plural = 'Real genes'
-        managed = False
 
     def __str__(self):
         return self.accession_number
@@ -46,21 +43,15 @@ class AnnotedGene(models.Model):
     f = models.FloatField()#(match="F")
     p_value = models.FloatField()#(match="PValue")
     fdr = models.FloatField()#(match="FDR")
-    genes = models.OneToOneField('RealGene', on_delete=models.CASCADE, primary_key=True)
+    #genes = models.OneToOneField('RealGene', on_delete=models.CASCADE, primary_key=True)
 
     class Meta:
         ordering = ['de_gene']
         verbose_name = 'Annotated gene'
         verbose_name_plural = 'Annotated genes'
-        managed = False
 
     def __str__(self):
         return self.de_gene
-
-# class MyCsvModel(CsvDbModel):
-#     class Meta:
-#         dbModel = AnnotedGene
-#         delimiter = ","
 
 # TO-DO: upload file to populate it!
 class FunctionalAnnotation(models.Model):
@@ -73,11 +64,10 @@ class FunctionalAnnotation(models.Model):
         ordering = ['description']
         verbose_name = 'Functional annotation'
         verbose_name_plural = 'Functional annotations'
-        managed = False
 
     def __str__(self):
         return self.description
 
-# class Ortholog(models.Model):
-#     orthogroup = models.CharField(max_length=20)
-#     #annoted_genes = models.ManyToManyField('AnnotedGene', blank=True, related_name='real_genes')
+class Ortholog(models.Model):
+    orthogroup = models.CharField(max_length=20)
+    #annoted_genes = models.ManyToManyField('AnnotedGene', blank=True, related_name='real_genes')
