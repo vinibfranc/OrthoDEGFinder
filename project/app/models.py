@@ -3,14 +3,14 @@ from django.db import models
 class Organism(models.Model):
     taxid = models.IntegerField(verbose_name="Taxonomic ID")
     kingdom = models.CharField(max_length=100)
-    phylum = models.CharField(max_length=100)
-    tax_class = models.CharField(max_length=100, verbose_name="Class")
-    order = models.CharField(max_length=100)
-    family = models.CharField(max_length=100)
+    # phylum = models.CharField(max_length=100)
+    # tax_class = models.CharField(max_length=100, verbose_name="Class")
+    # order = models.CharField(max_length=100)
+    # family = models.CharField(max_length=100)
     genus = models.CharField(max_length=100)
     species = models.CharField(max_length=100)
     lineage_strain = models.CharField(max_length=100, verbose_name="Lineage/strain")
-    annotation_reference_organism = models.CharField(max_length=100, null=True)
+    annotation_reference_organism = models.CharField(max_length=300, null=True)
     #real_genes = models.ManyToManyField('RealGene', blank=True, related_name='real_genes')
 
     class Meta:
@@ -38,12 +38,12 @@ class RealGene(models.Model):
 
 class AnalysisAnnotatedGene(models.Model):
     de_gene = models.CharField(max_length=10)
-    log_fc = models.FloatField()#(match="logFC")
-    log_cpm = models.FloatField()#(match="logCPM")
-    f = models.FloatField()#(match="F")
-    p_value = models.FloatField()#(match="PValue")
-    fdr = models.FloatField()#(match="FDR")
-    organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
+    log_fc = models.FloatField()
+    log_cpm = models.FloatField()
+    f = models.FloatField()
+    p_value = models.FloatField()
+    fdr = models.FloatField()
+    #organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
     #genes = models.OneToOneField('RealGene', on_delete=models.CASCADE, primary_key=True)
 
     class Meta:
@@ -59,7 +59,7 @@ class Pannzer2Annotation(models.Model):
     go_id = models.IntegerField()
     ontology = models.CharField(max_length=5)
     description = models.CharField(max_length=200)
-    organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
+    #organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['description']
@@ -69,6 +69,17 @@ class Pannzer2Annotation(models.Model):
     def __str__(self):
         return self.description
 
-# class Ortholog(models.Model):
-#     orthogroup = models.CharField(max_length=20)
-#     annoted_genes = models.ManyToManyField('AnnotedGene', blank=True, related_name='real_genes')
+class ExperimentalDesign(models.Model):
+    description = models.CharField(max_length=200)
+    condition_1 = models.CharField(max_length=20)
+    condition_2 = models.CharField(max_length=20)
+    replicate_number = models.IntegerField()
+    organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
+
+class Ortholog(models.Model):
+    orthogroup = models.CharField(max_length=20)
+    #organism_1 = models.ForeignKey('Organism', on_delete=models.CASCADE, related_name='organism_1')
+    orthologs_organism_1 = models.CharField(max_length=500)
+    #organism_2 = models.ForeignKey('Organism', on_delete=models.CASCADE, related_name='organism_2')
+    orthologs_organism_2 = models.CharField(max_length=500)
+    #annoted_genes = models.ManyToManyField('AnnotedGene', blank=True, related_name='real_genes')

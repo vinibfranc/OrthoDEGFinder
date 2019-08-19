@@ -1,10 +1,29 @@
-from import_export import resources
-from .models import AnnotedGene, FunctionalAnnotation
+from import_export import resources, fields
+from import_export.widgets import ForeignKeyWidget, ManyToManyWidget
+from .models import Organism, AnalysisAnnotatedGene, Pannzer2Annotation, Ortholog
+import import_export.admin
 
-class AnnotedGeneResource(resources.ModelResource):
+class AnalysisAnnotatedGeneResource(resources.ModelResource):
+    organism = fields.Field(column_name='organism', attribute='organism', widget=ForeignKeyWidget(Organism, 'taxid'))
+    skip_unchanged = True
+    report_skipped = True
+    exclude = ('id',)
     class Meta:
-        model = AnnotedGene
+        model = AnalysisAnnotatedGene
 
-class FunctionalAnnotationResource(resources.ModelResource):
+class Pannzer2AnnotationResource(resources.ModelResource):
+    organism = fields.Field(column_name='organism', attribute='organism', widget=ForeignKeyWidget(Organism, 'taxid'))
+    skip_unchanged = True
+    report_skipped = True
+    exclude = ('id',)
     class Meta:
-        model = FunctionalAnnotation
+        model = Pannzer2Annotation
+
+class OrthologResource(resources.ModelResource):
+    organism_1 = fields.Field('Organism', column_name='organism_1', widget=ManyToManyWidget(Organism, 'taxid'))
+    organism_2 = fields.Field('Organism', column_name='organism_2', widget=ManyToManyWidget(Organism, 'taxid'))
+    skip_unchanged = True
+    report_skipped = True
+    exclude = ('id',)
+    class Meta:
+        model = Ortholog
