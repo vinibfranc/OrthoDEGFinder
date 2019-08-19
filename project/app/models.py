@@ -11,7 +11,7 @@ class Organism(models.Model):
     species = models.CharField(max_length=100)
     lineage_strain = models.CharField(max_length=100, verbose_name="Lineage/strain")
     annotation_reference_organism = models.CharField(max_length=100, null=True)
-    real_genes = models.ManyToManyField('RealGene', blank=True, related_name='real_genes')
+    #real_genes = models.ManyToManyField('RealGene', blank=True, related_name='real_genes')
 
     class Meta:
         ordering = ['taxid']
@@ -24,8 +24,9 @@ class Organism(models.Model):
 class RealGene(models.Model):
     accession_number = models.CharField(max_length=20) 
     locus_tag = models.CharField(max_length=20)
-    annotation = models.ForeignKey('FunctionalAnnotation', on_delete=models.CASCADE, null=True)
-    de_genes = models.FileField(verbose_name="Differentially expressed genes", upload_to="", null=True)
+    organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
+    #annotation = models.ForeignKey('Pannzer2Annotation', on_delete=models.CASCADE, null=True)
+    #de_genes = models.FileField(verbose_name="Differentially expressed genes", upload_to="", null=True)
 
     class Meta:
         ordering = ['accession_number']
@@ -35,39 +36,39 @@ class RealGene(models.Model):
     def __str__(self):
         return self.accession_number
 
-# TO-DO: upload file to populate it!
-class AnnotedGene(models.Model):
+class AnalysisAnnotatedGene(models.Model):
     de_gene = models.CharField(max_length=10)
     log_fc = models.FloatField()#(match="logFC")
     log_cpm = models.FloatField()#(match="logCPM")
     f = models.FloatField()#(match="F")
     p_value = models.FloatField()#(match="PValue")
     fdr = models.FloatField()#(match="FDR")
+    organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
     #genes = models.OneToOneField('RealGene', on_delete=models.CASCADE, primary_key=True)
 
     class Meta:
         ordering = ['de_gene']
-        verbose_name = 'Annotated gene'
-        verbose_name_plural = 'Annotated genes'
+        verbose_name = 'Analysis Annotated gene'
+        verbose_name_plural = 'Analysis Annotated genes'
 
     def __str__(self):
         return self.de_gene
 
-# TO-DO: upload file to populate it!
-class FunctionalAnnotation(models.Model):
+class Pannzer2Annotation(models.Model):
     protein_id = models.CharField(max_length=20)
     go_id = models.IntegerField()
     ontology = models.CharField(max_length=5)
     description = models.CharField(max_length=200)
+    organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['description']
-        verbose_name = 'Functional annotation'
-        verbose_name_plural = 'Functional annotations'
+        verbose_name = 'Pannzer2 Functional annotation'
+        verbose_name_plural = 'Pannzer2 Functional annotations'
 
     def __str__(self):
         return self.description
 
-class Ortholog(models.Model):
-    orthogroup = models.CharField(max_length=20)
-    #annoted_genes = models.ManyToManyField('AnnotedGene', blank=True, related_name='real_genes')
+# class Ortholog(models.Model):
+#     orthogroup = models.CharField(max_length=20)
+#     annoted_genes = models.ManyToManyField('AnnotedGene', blank=True, related_name='real_genes')
