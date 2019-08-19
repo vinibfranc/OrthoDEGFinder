@@ -20,8 +20,8 @@ class Pannzer2AnnotationResource(resources.ModelResource):
         model = Pannzer2Annotation
 
 class OrthologResource(resources.ModelResource):
-    organism_1 = fields.Field('Organism', column_name='organism_1', widget=ManyToManyWidget(Organism, 'taxid'))
-    organism_2 = fields.Field('Organism', column_name='organism_2', widget=ManyToManyWidget(Organism, 'taxid'))
+    organism_1 = fields.Field('Organism', column_name='organism_1', widget=ForeignKeyWidget(Organism, 'taxid'))
+    organism_2 = fields.Field('Organism', column_name='organism_2', widget=ForeignKeyWidget(Organism, 'taxid'))
     skip_unchanged = True
     report_skipped = True
     exclude = ('id',)
