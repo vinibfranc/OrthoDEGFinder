@@ -3,10 +3,10 @@ from django.db import models
 class Organism(models.Model):
     taxid = models.IntegerField(verbose_name="Taxonomic ID")
     kingdom = models.CharField(max_length=100)
-    # phylum = models.CharField(max_length=100)
-    # tax_class = models.CharField(max_length=100, verbose_name="Class")
-    # order = models.CharField(max_length=100)
-    # family = models.CharField(max_length=100)
+    phylum = models.CharField(max_length=100)
+    tax_class = models.CharField(max_length=100, verbose_name="Class")
+    order = models.CharField(max_length=100)
+    family = models.CharField(max_length=100)
     genus = models.CharField(max_length=100)
     species = models.CharField(max_length=100)
     lineage_strain = models.CharField(max_length=100, verbose_name="Lineage/strain")
@@ -38,11 +38,11 @@ class RealGene(models.Model):
 
 class AnalysisAnnotatedGene(models.Model):
     de_gene = models.CharField(max_length=10)
-    log_fc = models.FloatField()
-    log_cpm = models.FloatField()
-    f = models.FloatField()
-    p_value = models.FloatField()
-    fdr = models.FloatField()
+    log_fc = models.FloatField(null=True)
+    log_cpm = models.FloatField(null=True)
+    f = models.FloatField(null=True)
+    p_value = models.FloatField(null=True)
+    fdr = models.FloatField(null=True)
     #organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
     #genes = models.OneToOneField('RealGene', on_delete=models.CASCADE, primary_key=True)
 

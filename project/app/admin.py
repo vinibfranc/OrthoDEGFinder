@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from .models import Organism, RealGene, AnalysisAnnotatedGene, Pannzer2Annotation, ExperimentalDesign, Ortholog
+from .models import Organism, AnalysisAnnotatedGene, Pannzer2Annotation, ExperimentalDesign, Ortholog, RealGene
 from .resources import AnalysisAnnotatedGeneResource, Pannzer2AnnotationResource, OrthologResource
 
 admin.site.site_header = 'Fungi Orthologs DE Platform'
@@ -9,7 +9,6 @@ admin.site.site_title = 'Fungi Orthologs DE Platform'
 class InLineRealGene(admin.StackedInline):
     model = RealGene
     extra = 0
-
 
 class InLineExperimentalDesign(admin.StackedInline):
     model = ExperimentalDesign
