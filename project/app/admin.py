@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from .models import Organism, AnalysisAnnotatedGene, Pannzer2Annotation, ExperimentalDesign, Ortholog, RealGene
-from .resources import AnalysisAnnotatedGeneResource, Pannzer2AnnotationResource, OrthologResource
+from .resources import AnalysisAnnotatedGeneResource, Pannzer2AnnotationResource
 
 admin.site.site_header = 'Fungi Orthologs DE Platform'
 admin.site.site_title = 'Fungi Orthologs DE Platform'
@@ -36,8 +36,8 @@ class Pannzer2AnnotationAdmin(ImportExportModelAdmin):
     search_fields = ('protein_id', 'go_id', 'ontology', 'description')
     resource_class = Pannzer2AnnotationResource
 @admin.register(Ortholog)
-class OrthologAdmin(ImportExportModelAdmin):
+class OrthologAdmin(admin.ModelAdmin):
     list_display = ('orthogroup', 'orthologs_organism_1', 'orthologs_organism_2')
     search_fields = ('orthogroup', 'orthologs_organism_1', 'orthologs_organism_2')
-    resource_class = OrthologResource
+    #resource_class = OrthologResource
 

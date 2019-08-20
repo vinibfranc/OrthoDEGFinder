@@ -3,12 +3,6 @@ from import_export.widgets import ForeignKeyWidget, FloatWidget, CharWidget, Dec
 from .models import Organism, AnalysisAnnotatedGene, Pannzer2Annotation, Ortholog, ExperimentalDesign
 import import_export.admin
 
-# class CustomFloatWidget(widgets.FloatWidget):
-#     def clean(self, value, row=None, *args, **kwargs):
-#         if self.is_empty(value):
-#             return None
-#         return float(str(value))
-
 class AnalysisAnnotatedGeneResource(resources.ModelResource):
     organism = fields.Field(column_name='organism', attribute='organism', widget=ForeignKeyWidget(Organism, 'taxid'))
     design = fields.Field(column_name='experimental_design', attribute='experimentaldesign', widget=ForeignKeyWidget(ExperimentalDesign, 'description'))
@@ -32,11 +26,11 @@ class Pannzer2AnnotationResource(resources.ModelResource):
     class Meta:
         model = Pannzer2Annotation
 
-class OrthologResource(resources.ModelResource):
-    organism_1 = fields.Field('Organism', column_name='organism_1', widget=ForeignKeyWidget(Organism, 'taxid'))
-    organism_2 = fields.Field('Organism', column_name='organism_2', widget=ForeignKeyWidget(Organism, 'taxid'))
-    skip_unchanged = True
-    report_skipped = True
-    exclude = ('id',)
-    class Meta:
-        model = Ortholog
+# class OrthologResource(resources.ModelResource):
+#     organism_1 = fields.Field('Organism', column_name='organism_1', attribute='organism_1', widget=ForeignKeyWidget(Organism, 'lineage_strain'))
+#     organism_2 = fields.Field('Organism', column_name='organism_2', attribute='organism_2', widget=ForeignKeyWidget(Organism, 'lineage_strain'))
+#     skip_unchanged = True
+#     report_skipped = True
+#     exclude = ('id',)
+#     class Meta:
+#         model = Ortholog

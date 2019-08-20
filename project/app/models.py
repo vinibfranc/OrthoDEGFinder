@@ -78,8 +78,8 @@ class ExperimentalDesign(models.Model):
 
 class Ortholog(models.Model):
     orthogroup = models.CharField(max_length=20)
-    #organism_1 = models.ForeignKey('Organism', on_delete=models.CASCADE, related_name='organism_1')
+    organism_1 = models.ForeignKey('Organism', on_delete=models.CASCADE, related_name='organism_1', null=True)
     orthologs_organism_1 = models.CharField(max_length=500)
-    #organism_2 = models.ForeignKey('Organism', on_delete=models.CASCADE, related_name='organism_2')
+    organism_2 = models.ForeignKey('Organism', on_delete=models.CASCADE, related_name='organism_2', null=True)
     orthologs_organism_2 = models.CharField(max_length=500)
     #annoted_genes = models.ManyToManyField('AnnotedGene', blank=True, related_name='real_genes')
