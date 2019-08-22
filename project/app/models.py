@@ -1,7 +1,7 @@
 from django.db import models
 
 class Organism(models.Model):
-    taxid = models.IntegerField(verbose_name="Taxonomic ID")
+    taxid = models.IntegerField(verbose_name="Taxonomic ID", unique=True)
     kingdom = models.CharField(max_length=100)
     phylum = models.CharField(max_length=100)
     tax_class = models.CharField(max_length=100, verbose_name="Class")
@@ -78,8 +78,8 @@ class ExperimentalDesign(models.Model):
 
 class Ortholog(models.Model):
     orthogroup = models.CharField(max_length=20)
-    organism_1 = models.ForeignKey('Organism', on_delete=models.CASCADE, related_name='organism_1', null=True)
+    organism_1 = models.ForeignKey('Organism', on_delete=models.CASCADE, related_name='organism_1', null=True) #to_field='taxid'
     orthologs_organism_1 = models.CharField(max_length=500)
-    organism_2 = models.ForeignKey('Organism', on_delete=models.CASCADE, related_name='organism_2', null=True)
+    organism_2 = models.ForeignKey('Organism', on_delete=models.CASCADE, related_name='organism_2', null=True) #to_field='taxid'
     orthologs_organism_2 = models.CharField(max_length=500)
     #annoted_genes = models.ManyToManyField('AnnotedGene', blank=True, related_name='real_genes')
