@@ -83,3 +83,8 @@ class Ortholog(models.Model):
     organism_2 = models.ForeignKey('Organism', on_delete=models.CASCADE, related_name='organism_2', null=True) #to_field='taxid'
     orthologs_organism_2 = models.CharField(max_length=500)
     #annoted_genes = models.ManyToManyField('AnnotedGene', blank=True, related_name='real_genes')
+
+    class Meta:
+        ordering = ['orthogroup']
+        verbose_name = 'Orthogroup'
+        verbose_name_plural = 'Orthogroups'

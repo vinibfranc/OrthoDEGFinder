@@ -37,7 +37,7 @@ class Pannzer2AnnotationAdmin(ImportExportModelAdmin):
     resource_class = Pannzer2AnnotationResource
 @admin.register(Ortholog)
 class OrthologAdmin(admin.ModelAdmin):
-    list_display = ('orthogroup', 'orthologs_organism_1', 'orthologs_organism_2')
+    list_display = ('orthogroup', 'organism_1', 'orthologs_organism_1', 'organism_2', 'orthologs_organism_2')
     search_fields = ('orthogroup', 'orthologs_organism_1', 'orthologs_organism_2')
     #resource_class = OrthologResource
 

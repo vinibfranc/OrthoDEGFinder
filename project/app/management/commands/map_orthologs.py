@@ -16,24 +16,16 @@ class Command(BaseCommand):
             orthologs = csv.reader(f, delimiter='\t')
             for row in orthologs:
                 #try:
-                #org1_id = Organism.objects.get(taxid=int(row[0])).id
-                #print(org1_id)
-                #org2_id = Organism.objects.get(taxid=int(row[1])).id
-                #print(org2_id)
                 org_1_int = int(row[0])
-                print(org_1_int)
                 org_2_int = int(row[1])
-                print(org_2_int)
-                org_1 = Organism.objects.get(taxid__iexact=org_1_int).id
-                org_2 = Organism.objects.get(taxid__iexact=org_2_int).id
+                org_1 = Organism.objects.get(taxid__iexact=org_1_int)
+                org_2 = Organism.objects.get(taxid__iexact=org_2_int)
+                #print(org_1.organism_1.all())
                 print(org_1)
                 print(org_2)
-                #print(id_ortho)
 
                 print(row)
 
-                #org_1_result = org_1.organism_1.add(org_1)
-                #org_1 = Organism.objects.filter(taxid__iexact=row[0])[:1].get()
                 ortholog = Ortholog.objects.create(pk=id_ortho,orthogroup=str(row[2]), organism_1=org_1, 
                             orthologs_organism_1=str(row[3]), organism_2=org_2, 
                             orthologs_organism_2=str(row[4]))
