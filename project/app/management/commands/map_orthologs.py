@@ -4,7 +4,6 @@ from django.core.management.base import BaseCommand
 from app.models import Ortholog, Organism
 import sys
 import os
-import re
 import csv
 
 class Command(BaseCommand):

@@ -47,7 +47,7 @@ class AnalysisAnnotatedGene(models.Model):
     #genes = models.OneToOneField('RealGene', on_delete=models.CASCADE, primary_key=True)
 
     class Meta:
-        ordering = ['de_gene']
+        ordering = ['log_fc', 'de_gene']
         verbose_name = 'Analysis Annotated gene'
         verbose_name_plural = 'Analysis Annotated genes'
 
