@@ -21,17 +21,17 @@ class Organism(models.Model):
     def __str__(self):
         return self.genus+" "+self.species+" "+self.lineage_strain
 
-class RealGene(models.Model):
-    accession_number = models.CharField(max_length=20) 
-    locus_tag = models.CharField(max_length=20)
+class GeneCorrespondences(models.Model):
+    gene = models.ForeignKey('AnalysisAnnotatedGene', on_delete=models.CASCADE)
+    annotation = models.ForeignKey('Pannzer2Annotation', on_delete=models.CASCADE)
     organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
     #annotation = models.ForeignKey('Pannzer2Annotation', on_delete=models.CASCADE, null=True)
     #de_genes = models.FileField(verbose_name="Differentially expressed genes", upload_to="", null=True)
 
     class Meta:
-        ordering = ['accession_number']
-        verbose_name = 'Real gene'
-        verbose_name_plural = 'Real genes'
+        ordering = ['organism']
+        verbose_name = 'Gene correspondences'
+        verbose_name_plural = 'Gene correspondences'
 
     def __str__(self):
         return self.accession_number
@@ -62,7 +62,7 @@ class Pannzer2Annotation(models.Model):
     #organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ['description']
+        ordering = ['protein_id']
         verbose_name = 'Pannzer2 Functional annotation'
         verbose_name_plural = 'Pannzer2 Functional annotations'
 

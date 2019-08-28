@@ -1,14 +1,10 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from .models import Organism, AnalysisAnnotatedGene, Pannzer2Annotation, ExperimentalDesign, Ortholog, RealGene
+from .models import Organism, AnalysisAnnotatedGene, Pannzer2Annotation, ExperimentalDesign, Ortholog, GeneCorrespondences
 from .resources import AnalysisAnnotatedGeneResource, Pannzer2AnnotationResource
 
 admin.site.site_header = 'Fungi Orthologs DE Platform'
 admin.site.site_title = 'Fungi Orthologs DE Platform'
-
-class InLineRealGene(admin.StackedInline):
-    model = RealGene
-    extra = 0
 
 class InLineExperimentalDesign(admin.StackedInline):
     model = ExperimentalDesign
@@ -17,13 +13,19 @@ class InLineExperimentalDesign(admin.StackedInline):
 class OrganismAdmin(admin.ModelAdmin):
     list_display = ('taxid', 'genus', 'species', 'lineage_strain')
     search_fields = ('taxid', 'genus', 'species', 'lineage_strain', 'genes__accession_number')
-    inlines = [InLineRealGene, InLineExperimentalDesign]
+    inlines = [InLineExperimentalDesign]
     fieldsets = (
         (None, {
             'fields': ('taxid', 'kingdom', 'phylum', 'tax_class', 'order', 'family', 'genus', 'species', 'lineage_strain', 'annotation_reference_organism')
         }),
     )
 admin.site.register(Organism, OrganismAdmin)
+
+@admin.register(GeneCorrespondences)
+class GeneCorrespondencesAdmin(admin.ModelAdmin):
+    #list_display = ('de_gene', 'annotation', 'organism')
+    #search_fields = ('gene', 'annotation', 'organism')
+    pass
 
 @admin.register(AnalysisAnnotatedGene)
 class AnalysisAnnotatedGeneAdmin(ImportExportModelAdmin):
