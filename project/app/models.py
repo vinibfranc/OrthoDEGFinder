@@ -24,17 +24,17 @@ class Organism(models.Model):
 class GeneCorrespondences(models.Model):
     gene = models.ForeignKey('AnalysisAnnotatedGene', on_delete=models.CASCADE)
     annotation = models.ForeignKey('Pannzer2Annotation', on_delete=models.CASCADE)
-    organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
+    #organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
     #annotation = models.ForeignKey('Pannzer2Annotation', on_delete=models.CASCADE, null=True)
     #de_genes = models.FileField(verbose_name="Differentially expressed genes", upload_to="", null=True)
 
     class Meta:
-        ordering = ['organism']
+        ordering = ['gene']
         verbose_name = 'Gene correspondences'
         verbose_name_plural = 'Gene correspondences'
 
     def __str__(self):
-        return self.accession_number
+        return str(self.gene)
 
 class AnalysisAnnotatedGene(models.Model):
     de_gene = models.CharField(max_length=10)
@@ -62,12 +62,12 @@ class Pannzer2Annotation(models.Model):
     #organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ['protein_id']
+        ordering = ['description']
         verbose_name = 'Pannzer2 Functional annotation'
         verbose_name_plural = 'Pannzer2 Functional annotations'
 
     def __str__(self):
-        return self.description
+        return self.protein_id
 
 class ExperimentalDesign(models.Model):
     description = models.CharField(max_length=200)
