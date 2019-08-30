@@ -26,7 +26,7 @@ class Command(BaseCommand):
         pannzer2 = []
 
         for i in range(len(pannzer2_query)):
-            print(pannzer2_query[i])
+            print("{}: {}".format(i, pannzer2_query[i]))
             handle = Entrez.efetch(db="protein", id="{}".format(pannzer2_query[i]), idtype="acc", rettype="gb", retmode="text")
             record = SeqIO.read(handle, "genbank")
             #print(record)
@@ -54,6 +54,7 @@ class Command(BaseCommand):
                 annot = Pannzer2Annotation.objects.filter(protein_id__iexact=str(k))[:1].get()
                 gene_c = AnalysisAnnotatedGene.objects.get(de_gene__iexact=str(v))
                 gene_create = GeneCorrespondences.objects.create(gene=gene_c, annotation=annot)
+                print(gene_create)
                 gene_create.save()
                 id_corresp += 1
                 print(id_corresp)

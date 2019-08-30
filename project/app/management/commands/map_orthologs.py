@@ -11,7 +11,7 @@ class Command(BaseCommand):
     def csv_to_orthologs(self):
         orthologs = [] #'+sys.argv[1]+'.py'
         id_ortho = 0
-        with open('app/orthologs/metarhizium_anisopliae__v__metarhizium_robertsii_format.tsv','r', encoding="utf-8", errors="ignore") as f:
+        with open('app/orthologs/OrthologsIDS_done.tsv','r', encoding="utf-8", errors="ignore") as f:
             orthologs = csv.reader(f, delimiter='\t')
             for row in orthologs:
                 #try:
