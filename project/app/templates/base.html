@@ -27,14 +27,17 @@
               <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Organisms</a>
+              <a class="nav-link" href="{% url 'search_organism' %}">Organisms</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Genes</a>
+              <a class="nav-link" href="{% url 'search_gene' %}">Genes</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Annotation</a>
-              </li>
+                <a class="nav-link" href="{% url 'search_annotation' %}">Annotation</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'search_orthologs' %}">Orthologs</a>
+            </li>
           </ul>
           <form class="form-inline mt-2 mt-md-0">
             <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
@@ -44,7 +47,7 @@
     </nav>
 
     <main role="main">
-        {% block conteudo %}
+        {% block content %}
         {% endblock %}
     </main>
 
@@ -52,6 +55,7 @@
     <footer class="footer-distributed">
         <div class="footer-left">
             <!--<h3>Company<span>logo</span></h3>-->
+            <img src="{% static 'img/infobio-ufcspa.png' %}" width="100">
             <img src="{% static 'img/logo-ufrgs.png' %}" width="100">
             <img src="{% static 'img/logo-ubtec.jpg' %}" width="100">
             <img src="">

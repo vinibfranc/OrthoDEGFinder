@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'nested_admin',
-    'import_export'
+    'import_export',
+    'django_filters',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [

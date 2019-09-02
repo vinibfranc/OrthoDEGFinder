@@ -11,8 +11,8 @@ class InLineExperimentalDesign(admin.StackedInline):
     extra = 0
 
 class OrganismAdmin(admin.ModelAdmin):
-    list_display = ('taxid', 'genus', 'species', 'lineage_strain')
-    search_fields = ('taxid', 'genus', 'species', 'lineage_strain', 'genes__accession_number')
+    list_display = ('taxid', 'genus', 'species', 'lineage_strain', 'annotation_reference_organism')
+    search_fields = ('taxid', 'genus', 'species', 'lineage_strain', 'annotation_reference_organism')
     inlines = [InLineExperimentalDesign]
     fieldsets = (
         (None, {
@@ -23,9 +23,8 @@ admin.site.register(Organism, OrganismAdmin)
 
 @admin.register(GeneCorrespondences)
 class GeneCorrespondencesAdmin(admin.ModelAdmin):
-    #list_display = ('de_gene', 'annotation', 'organism')
-    #search_fields = ('gene', 'annotation', 'organism')
-    pass
+    list_display = ('gene', 'annotation')
+    search_fields = ('gene', 'annotation')
 
 @admin.register(AnalysisAnnotatedGene)
 class AnalysisAnnotatedGeneAdmin(ImportExportModelAdmin):
@@ -40,6 +39,4 @@ class Pannzer2AnnotationAdmin(ImportExportModelAdmin):
 @admin.register(Ortholog)
 class OrthologAdmin(admin.ModelAdmin):
     list_display = ('orthogroup', 'organism_1', 'orthologs_organism_1', 'organism_2', 'orthologs_organism_2')
-    search_fields = ('orthogroup', 'orthologs_organism_1', 'orthologs_organism_2')
-    #resource_class = OrthologResource
-
+    search_fields = ('orthogroup', 'organism_1', 'orthologs_organism_1', 'organism_2', 'orthologs_organism_2')

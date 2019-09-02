@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid" style="padding: 2em;">
+  <h4 class="display-4">Annotation filtering</h4>
+  <!--<p class="lead">...</p>-->
+</div>
+<div class="container">
+  <div class="row">
+    <form method="get">
+      <div class="well">
+        <div class="row">
+          <!--<div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.organism__taxid.label_tag }}
+            {% render_field filter.form.organism__taxid class="form-control" %}
+          </div>-->
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.protein_id.label_tag }}
+            {% render_field filter.form.protein_id class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.go_id.label_tag }}
+            {% render_field filter.form.go_id class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.ontology.label_tag }}
+            {% render_field filter.form.ontology class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.description.label_tag }}
+            {% render_field filter.form.description class="form-control" %}
+          </div>
+          
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <span class="fa fa-search"></span> Search
+        </button>
+      </div>
+    </form>
+  </div>
+
+<div class="row">
+  <table class="table table-hover" style="margin-top: 2em;">
+    <thead>
+      <tr>
+        <th>#</th>
+        <!--<th>Organism</th>-->
+        <th>Protein ID</th>
+        <th>GO ID</th>
+        <th>Ontology</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for annotation in filter.qs %}
+        <tr>
+          <td>{{ forloop.counter }}</td>  
+          <!--<td>{{ gene.organism.taxid }}</td>-->
+          <td>{{ annotation.protein_id }}</td>
+          <td>{{ annotation.go_id }}</td>
+          <td>{{ annotation.ontology }}</td>
+          <td>{{ annotation.description }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No data</td>
+        </tr>
+      {% endfor %}
+      <td class="bg-primary" colspan="5">{{filter.qs|length}} annotation(s) found</td>
+    </tbody>
+  </table>
+</div>
+{% endblock %}

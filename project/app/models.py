@@ -21,12 +21,17 @@ class Organism(models.Model):
     def __str__(self):
         return self.genus+" "+self.species+" "+self.lineage_strain
 
+class ExperimentalDesign(models.Model):
+    description = models.CharField(max_length=200)
+    condition_1 = models.CharField(max_length=20)
+    condition_2 = models.CharField(max_length=20)
+    replicate_number = models.IntegerField()
+    organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
+
 class GeneCorrespondences(models.Model):
     gene = models.ForeignKey('AnalysisAnnotatedGene', on_delete=models.CASCADE)
     annotation = models.ForeignKey('Pannzer2Annotation', on_delete=models.CASCADE)
     #organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
-    #annotation = models.ForeignKey('Pannzer2Annotation', on_delete=models.CASCADE, null=True)
-    #de_genes = models.FileField(verbose_name="Differentially expressed genes", upload_to="", null=True)
 
     class Meta:
         ordering = ['gene']
@@ -69,13 +74,6 @@ class Pannzer2Annotation(models.Model):
     def __str__(self):
         return self.protein_id
 
-class ExperimentalDesign(models.Model):
-    description = models.CharField(max_length=200)
-    condition_1 = models.CharField(max_length=20)
-    condition_2 = models.CharField(max_length=20)
-    replicate_number = models.IntegerField()
-    organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
-
 class Ortholog(models.Model):
     orthogroup = models.CharField(max_length=20)
     organism_1 = models.ForeignKey('Organism', on_delete=models.CASCADE, related_name='organism_1', null=True) #to_field='taxid'
@@ -86,5 +84,5 @@ class Ortholog(models.Model):
 
     class Meta:
         ordering = ['orthogroup']
-        verbose_name = 'Orthogroup'
-        verbose_name_plural = 'Orthogroups'
+        verbose_name = 'Orthologs'
+        verbose_name_plural = 'Orthologs'

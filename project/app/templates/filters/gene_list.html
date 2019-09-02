@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid" style="padding: 2em;">
+  <h4 class="display-4">Gene filtering</h4>
+  <!--<p class="lead">...</p>-->
+</div>
+<div class="container">
+  <div class="row">
+    <form method="get">
+      <div class="well">
+        <div class="row">
+          <!--<div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.organism__taxid.label_tag }}
+            {% render_field filter.form.organism__taxid class="form-control" %}
+          </div>-->
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.de_gene.label_tag }}
+            {% render_field filter.form.de_gene class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.log_fc.label_tag }}
+            {% render_field filter.form.log_fc class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.log_cpm.label_tag }}
+            {% render_field filter.form.log_cpm class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.f.label_tag }}
+            {% render_field filter.form.f class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.p_value.label_tag }}
+              {% render_field filter.form.p_value class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.fdr.label_tag }}
+              {% render_field filter.form.fdr class="form-control" %}
+          </div>
+          
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <span class="fa fa-search"></span> Search
+        </button>
+      </div>
+    </form>
+  </div>
+
+<div class="row">
+  <table class="table table-striped table-hover" style="margin-top: 2em;">
+    <thead>
+      <tr>
+        <th>#</th>
+        <!--<th>Organism</th>-->
+        <th>DE Gene</th>
+        <th>Log FC</th>
+        <th>Log CPM</th>
+        <th>F</th>
+        <th>P Value</th>
+        <th>FDR</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for gene in filter.qs %}
+        <tr>
+          <td>{{ forloop.counter }}</td>  
+          <!--<td>{{ gene.organism.taxid }}</td>-->
+          <td>{{ gene.de_gene }}</td>
+          <td>{{ gene.log_fc }}</td>
+          <td>{{ gene.log_cpm }}</td>
+          <td>{{ gene.f }}</td>
+          <td>{{ gene.p_value }}</td>
+          <td>{{ gene.fdr }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="7">No data</td>
+        </tr>
+      {% endfor %}
+      <td class="bg-primary" colspan="7">{{filter.qs|length}} gene(s) found</td>
+    </tbody>
+  </table>
+</div>
+{% endblock %}

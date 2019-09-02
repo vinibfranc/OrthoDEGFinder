@@ -61,11 +61,6 @@ class Command(BaseCommand):
             except (ValueError, AnalysisAnnotatedGene.DoesNotExist) as e:
                 pass
 
-
-
-        # for j in range(len(de_genes_query)):
-        #     for k in range(len(locus_tag)):
-
     def handle(self, *args, **options):
         self.map_genes_to_annotation()
 

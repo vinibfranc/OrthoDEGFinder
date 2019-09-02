@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid" style="padding: 2em;">
+  <h4 class="display-4">Organism filtering</h4>
+  <!--<p class="lead">...</p>-->
+</div>
+<div class="container">
+  <div class="row">
+    <form method="get">
+      <div class="well">
+        <div class="row">
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.taxid.label_tag }}
+            {% render_field filter.form.taxid class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.kingdom.label_tag }}
+            {% render_field filter.form.kingdom class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.genus.label_tag }}
+            {% render_field filter.form.genus class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.species.label_tag }}
+            {% render_field filter.form.species class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.lineage_strain.label_tag }}
+              {% render_field filter.form.lineage_strain class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.annotation_reference_organism.label_tag }}
+              {% render_field filter.form.annotation_reference_organism class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.experimentaldesign__description.label_tag }}
+              {% render_field filter.form.experimentaldesign__description class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.experimentaldesign__condition_1.label_tag }}
+              {% render_field filter.form.experimentaldesign__condition_1 class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.experimentaldesign__condition_2.label_tag }}
+              {% render_field filter.form.experimentaldesign__condition_2 class="form-control" %}
+          </div>
+          
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <span class="fa fa-search"></span> Search
+        </button>
+      </div>
+    </form>
+  </div>
+
+<div class="row">
+  <table class="table table-striped table-hover" style="margin-top: 2em;">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Tax ID</th>
+        <th>Kingdom</th>
+        <th>Genus</th>
+        <th>Species</th>
+        <th>Strain</th>
+        <th>Reference annotation</th>
+        <th>Experimental design</th>
+        <th>Condition 1</th>
+        <th>Condition 2</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for organism in filter.qs %}
+        <tr>
+          <td>{{ forloop.counter }}</td>  
+          <td>{{ organism.taxid }}</td>
+          <td>{{ organism.kingdom }}</td>
+          <td>{{ organism.genus }}</td>
+          <td>{{ organism.species }}</td>
+          <td>{{ organism.lineage_strain }}</td>
+          <td>{{ organism.annotation_reference_organism }}</td>
+          <td>
+            {% for design in organism.experimentaldesign_set.all %}
+              {{ design.description }}
+            {% endfor %}
+          </td>
+          <td>
+            {% for design in organism.experimentaldesign_set.all %}
+              {{ design.condition_1 }}
+            {% endfor %}
+          </td>
+          <td>
+            {% for design in organism.experimentaldesign_set.all %}
+              {{ design.condition_2 }}
+            {% endfor %}
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="10">No data</td>
+        </tr>
+      {% endfor %}
+      <td class="bg-primary" colspan="10">{{filter.qs|length}} organism(s) found</td>
+    </tbody>
+  </table>
+</div>
+{% endblock %}

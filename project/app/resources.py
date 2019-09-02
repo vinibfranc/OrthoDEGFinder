@@ -17,6 +17,7 @@ class AnalysisAnnotatedGeneResource(resources.ModelResource):
     exclude = ('id',)
     class Meta:
         model = AnalysisAnnotatedGene
+        export_order = ('id', 'organism', 'design')
 
 class Pannzer2AnnotationResource(resources.ModelResource):
     organism = fields.Field(column_name='organism', attribute='organism', widget=ForeignKeyWidget(Organism, 'taxid'))
@@ -25,12 +26,3 @@ class Pannzer2AnnotationResource(resources.ModelResource):
     exclude = ('id',)
     class Meta:
         model = Pannzer2Annotation
-
-# class OrthologResource(resources.ModelResource):
-#     organism_1 = fields.Field('Organism', column_name='organism_1', attribute='organism_1', widget=ForeignKeyWidget(Organism, 'lineage_strain'))
-#     organism_2 = fields.Field('Organism', column_name='organism_2', attribute='organism_2', widget=ForeignKeyWidget(Organism, 'lineage_strain'))
-#     skip_unchanged = True
-#     report_skipped = True
-#     exclude = ('id',)
-#     class Meta:
-#         model = Ortholog
