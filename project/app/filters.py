@@ -1,5 +1,10 @@
 import django_filters
-from app.models import Organism, ExperimentalDesign, AnalysisAnnotatedGene, Pannzer2Annotation, Ortholog
+from app.models import Organism, ExperimentalDesign, AnalysisAnnotatedGene, Pannzer2Annotation, Ortholog, GeneCorrespondences
+
+CHOICES = (
+    ('ascending', 'Ascending'),
+    ('descending', 'Descending')
+)
 
 class OrganismFilter(django_filters.FilterSet):
     taxid = django_filters.CharFilter(lookup_expr='iexact', label='Tax ID')
@@ -24,9 +29,14 @@ class AnalysisAnnotatedGeneFilter(django_filters.FilterSet):
     f = django_filters.NumberFilter(lookup_expr='startswith', label='F')
     p_value = django_filters.NumberFilter(lookup_expr='startswith', label='P Value')
     fdr = django_filters.NumberFilter(lookup_expr='startswith', label='FDR')
+    #log_fc_ordering = django_filters.ChoiceFilter(label='Ordering', choices=CHOICES, method='filter_by_order')
     class Meta:
         model = AnalysisAnnotatedGene
         fields = ['de_gene', 'log_fc', 'log_cpm', 'f', 'p_value', 'fdr']
+    
+    #def filter_by_order(self, queryset, name, value):
+        #expression = 'log_fc' if value == 'ascending' else '-log_fc'
+        #return queryset.order_by(expression)
 
 class Pannzer2AnnotationFilter(django_filters.FilterSet):
     #organism__taxid = django_filters.CharFilter(lookup_expr='icontains', label='Organism')
@@ -47,3 +57,15 @@ class OrthologFilter(django_filters.FilterSet):
     class Meta:
         model = Ortholog
         fields = ['orthogroup', 'organism_1', 'orthologs_organism_1', 'organism_2', 'orthologs_organism_2']
+
+class UnifiedOrganismFilter(django_filters.FilterSet):
+    pass
+
+class UnifiedGeneFilter(django_filters.FilterSet):
+    pass
+
+class UnifiedOrganismFilter(django_filters.FilterSet):
+    pass
+
+class UnifiedAnnotationFilter(django_filters.FilterSet):
+    pass

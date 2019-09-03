@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Organism, ExperimentalDesign, AnalysisAnnotatedGene, Pannzer2Annotation, Ortholog
-from .filters import OrganismFilter, AnalysisAnnotatedGeneFilter, Pannzer2AnnotationFilter, OrthologFilter
+from .models import Organism, ExperimentalDesign, AnalysisAnnotatedGene, Pannzer2Annotation, Ortholog, GeneCorrespondences
+from .filters import OrganismFilter, AnalysisAnnotatedGeneFilter, Pannzer2AnnotationFilter, OrthologFilter, UnifiedOrganismFilter, UnifiedGeneFilter, UnifiedAnnotationFilter                                                                                                                        
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def home(request):
@@ -33,3 +33,12 @@ def search_orthologs(request):
     orthologs_list = Ortholog.objects.all()
     orthologs_filter = OrthologFilter(request.GET, queryset=orthologs_list)
     return render(request, 'filters/orthologs_list.html', {'filter': orthologs_filter})
+
+def search_unified_organism(request):
+    return render(request, 'filters/unified_organism_list.html')
+
+def search_unified_gene(request):
+    return render(request, 'filters/unified_gene_list.html')
+
+def search_unified_annotation(request):
+    return render(request, 'filters/unified_annotatation_list.html')

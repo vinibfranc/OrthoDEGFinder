@@ -23,20 +23,43 @@ admin.site.register(Organism, OrganismAdmin)
 
 @admin.register(GeneCorrespondences)
 class GeneCorrespondencesAdmin(admin.ModelAdmin):
-    list_display = ('gene', 'annotation')
-    search_fields = ('gene', 'annotation')
+    list_display = ('de_genes', 'protein_ids', 'functional_annotation_count')
+
+    def de_genes(self, obj):
+        qs = AnalysisAnnotatedGene.objects.filter(de_gene=obj.gene).values('de_gene').order_by('de_gene')
+        qs_str = ', '.join([str(qs[i]['de_gene']) for i,c in enumerate(qs)])
+        return qs_str
+        
+    def protein_ids(self, obj):
+        qs = Pannzer2Annotation.objects.filter(protein_id=obj.annotation).first()
+        return qs
+
+    def functional_annotation_count(self, obj):
+        qs = Pannzer2Annotation.objects.filter(protein_id=obj.annotation).count()
+        return qs
 
 @admin.register(AnalysisAnnotatedGene)
-class AnalysisAnnotatedGeneAdmin(ImportExportModelAdmin):
+class AnalysisAnnotatedGeneAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('de_gene', 'log_fc', 'log_cpm', 'f', 'p_value', 'fdr')
     search_fields = ('de_gene', 'log_fc', 'p_value')
     resource_class = AnalysisAnnotatedGeneResource
+
+    #def organism__name(self, obj):
+        #return str(obj.organism.genus+" "+obj.organism.species+" "+obj.organism.lineage_strain)
+
 @admin.register(Pannzer2Annotation)
-class Pannzer2AnnotationAdmin(ImportExportModelAdmin):
+class Pannzer2AnnotationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('protein_id', 'go_id', 'ontology', 'description')
     search_fields = ('protein_id', 'go_id', 'ontology', 'description')
     resource_class = Pannzer2AnnotationResource
+
 @admin.register(Ortholog)
 class OrthologAdmin(admin.ModelAdmin):
-    list_display = ('orthogroup', 'organism_1', 'orthologs_organism_1', 'organism_2', 'orthologs_organism_2')
-    search_fields = ('orthogroup', 'organism_1', 'orthologs_organism_1', 'organism_2', 'orthologs_organism_2')
+    list_display = ('orthogroup', 'organism_1_name', 'orthologs_organism_1', 'organism_2_name', 'orthologs_organism_2')
+    search_fields = ('orthogroup', 'orthologs_organism_1', 'orthologs_organism_2')
+
+    def organism_1_name(self, obj):
+        return str(obj.organism_1.genus+" "+obj.organism_1.species+" "+obj.organism_1.lineage_strain)
+    
+    def organism_2_name(self, obj):
+        return str(obj.organism_2.genus+" "+obj.organism_2.species+" "+obj.organism_2.lineage_strain)

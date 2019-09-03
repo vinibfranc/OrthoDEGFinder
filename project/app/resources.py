@@ -17,7 +17,7 @@ class AnalysisAnnotatedGeneResource(resources.ModelResource):
     exclude = ('id',)
     class Meta:
         model = AnalysisAnnotatedGene
-        export_order = ('id', 'organism', 'design')
+        fields = ('organism', 'design', 'de_gene', 'log_fc', 'log_cpm', 'f', 'p_value', 'fdr', 'id')
 
 class Pannzer2AnnotationResource(resources.ModelResource):
     organism = fields.Field(column_name='organism', attribute='organism', widget=ForeignKeyWidget(Organism, 'taxid'))
@@ -26,3 +26,4 @@ class Pannzer2AnnotationResource(resources.ModelResource):
     exclude = ('id',)
     class Meta:
         model = Pannzer2Annotation
+        fields = ('organism', 'protein_id', 'go_id', 'ontology', 'description', 'id')
