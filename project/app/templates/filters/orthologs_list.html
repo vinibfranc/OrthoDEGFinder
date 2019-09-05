@@ -12,10 +12,6 @@
     <form method="get">
       <div class="well">
         <div class="row">
-          <!--<div class="form-group col-sm-4 col-md-3">
-            {{ filter.form.organism__taxid.label_tag }}
-            {% render_field filter.form.organism__taxid class="form-control" %}
-          </div>-->
           <div class="form-group col-sm-4 col-md-3">
             {{ filter.form.orthogroup.label_tag }}
             {% render_field filter.form.orthogroup class="form-control" %}
@@ -50,7 +46,6 @@
     <thead>
       <tr>
         <th>#</th>
-        <!--<th>Organism</th>-->
         <th>Orthogroup</th>
         <th>Organism 1</th>
         <th>Ortholog organism 1</th>
@@ -61,8 +56,7 @@
     <tbody>
       {% for ortholog in filter.qs %}
         <tr>
-          <td>{{ forloop.counter }}</td>  
-          <!--<td>{{ gene.organism.taxid }}</td>-->
+          <td>{{ forloop.counter }}</td>
           <td>{{ ortholog.orthogroup }}</td>
           <td>{{ ortholog.organism_1.scientific_name_with_strain }}</td>
           <td>{{ ortholog.orthologs_organism_1 }}</td>

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load pagination_tags %}
 {% load widget_tweaks %}
 
 {% block content %}
@@ -64,6 +64,7 @@
       </tr>
     </thead>
     <tbody>
+      {% autopaginate filter.qs 50 %}
       {% for org in filter.qs %}
         <tr>
           <td>{{ forloop.counter }}</td>  
@@ -74,29 +75,15 @@
           <td>{{ org.description }}</td>
           <td>{{ org.condition_1 }}</td>
           <td>{{ org.condition_2 }}</td>
-          <!--<td>
-            {% for design in organism.experimentaldesign_set.all %}
-              {{ design.description }}
-            {% endfor %}
-          </td>
-          <td>
-            {% for design in organism.experimentaldesign_set.all %}
-              {{ design.condition_1 }}
-            {% endfor %}
-          </td>
-          <td>
-            {% for design in organism.experimentaldesign_set.all %}
-              {{ design.condition_2 }}
-            {% endfor %}
-          </td>-->
         </tr>
       {% empty %}
         <tr>
-          <td colspan="10">No data</td>
+          <td colspan="8">No data</td>
         </tr>
       {% endfor %}
-      <td class="bg-primary" colspan="10">{{filter.qs|length}} organism(s) found</td>
+      <td class="bg-primary" colspan="8">{{filter.qs|length}} organism(s) found</td>
     </tbody>
   </table>
+  {% paginate %}
 </div>
 {% endblock %}

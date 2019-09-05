@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'nested_admin',
     'import_export',
     'django_filters',
-    'widget_tweaks'
+    'widget_tweaks',
+    'pagination_bootstrap',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pagination_bootstrap.middleware.PaginationMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -67,9 +69,11 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
                 'django.contrib.messages.context_processors.messages',
             ],
         },
