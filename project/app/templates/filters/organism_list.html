@@ -13,40 +13,32 @@
       <div class="well">
         <div class="row">
           <div class="form-group col-sm-4 col-md-3">
-            {{ filter.form.taxid.label_tag }}
-            {% render_field filter.form.taxid class="form-control" %}
+            {{ filter.form.organism__taxid.label_tag }}
+            {% render_field filter.form.organism__taxid class="form-control" %}
           </div>
           <div class="form-group col-sm-4 col-md-3">
-            {{ filter.form.kingdom.label_tag }}
-            {% render_field filter.form.kingdom class="form-control" %}
+            {{ filter.form.organism__kingdom.label_tag }}
+            {% render_field filter.form.organism__kingdom class="form-control" %}
           </div>
           <div class="form-group col-sm-4 col-md-3">
-            {{ filter.form.genus.label_tag }}
-            {% render_field filter.form.genus class="form-control" %}
+              {{ filter.form.organism__scientific_name_with_strain.label_tag }}
+              {% render_field filter.form.organism__scientific_name_with_strain class="form-control" %}
           </div>
           <div class="form-group col-sm-4 col-md-3">
-            {{ filter.form.species.label_tag }}
-            {% render_field filter.form.species class="form-control" %}
+              {{ filter.form.organism__annotation_reference_organism.label_tag }}
+              {% render_field filter.form.organism__annotation_reference_organism class="form-control" %}
           </div>
           <div class="form-group col-sm-4 col-md-3">
-              {{ filter.form.lineage_strain.label_tag }}
-              {% render_field filter.form.lineage_strain class="form-control" %}
+              {{ filter.form.description.label_tag }}
+              {% render_field filter.form.description class="form-control" %}
           </div>
           <div class="form-group col-sm-4 col-md-3">
-              {{ filter.form.annotation_reference_organism.label_tag }}
-              {% render_field filter.form.annotation_reference_organism class="form-control" %}
+              {{ filter.form.condition_1.label_tag }}
+              {% render_field filter.form.condition_1 class="form-control" %}
           </div>
           <div class="form-group col-sm-4 col-md-3">
-              {{ filter.form.experimentaldesign__description.label_tag }}
-              {% render_field filter.form.experimentaldesign__description class="form-control" %}
-          </div>
-          <div class="form-group col-sm-4 col-md-3">
-              {{ filter.form.experimentaldesign__condition_1.label_tag }}
-              {% render_field filter.form.experimentaldesign__condition_1 class="form-control" %}
-          </div>
-          <div class="form-group col-sm-4 col-md-3">
-              {{ filter.form.experimentaldesign__condition_2.label_tag }}
-              {% render_field filter.form.experimentaldesign__condition_2 class="form-control" %}
+              {{ filter.form.condition_2.label_tag }}
+              {% render_field filter.form.condition_2 class="form-control" %}
           </div>
           
         </div>
@@ -64,9 +56,7 @@
         <th>#</th>
         <th>Tax ID</th>
         <th>Kingdom</th>
-        <th>Genus</th>
-        <th>Species</th>
-        <th>Strain</th>
+        <th>Scientific name with strain</th>
         <th>Reference annotation</th>
         <th>Experimental design</th>
         <th>Condition 1</th>
@@ -74,16 +64,17 @@
       </tr>
     </thead>
     <tbody>
-      {% for organism in filter.qs %}
+      {% for org in filter.qs %}
         <tr>
           <td>{{ forloop.counter }}</td>  
-          <td>{{ organism.taxid }}</td>
-          <td>{{ organism.kingdom }}</td>
-          <td>{{ organism.genus }}</td>
-          <td>{{ organism.species }}</td>
-          <td>{{ organism.lineage_strain }}</td>
-          <td>{{ organism.annotation_reference_organism }}</td>
-          <td>
+          <td>{{ org.organism.taxid }}</td>
+          <td>{{ org.organism.kingdom }}</td>
+          <td>{{ org.organism.scientific_name_with_strain }}</td>
+          <td>{{ org.organism.annotation_reference_organism }}</td>
+          <td>{{ org.description }}</td>
+          <td>{{ org.condition_1 }}</td>
+          <td>{{ org.condition_2 }}</td>
+          <!--<td>
             {% for design in organism.experimentaldesign_set.all %}
               {{ design.description }}
             {% endfor %}
@@ -97,7 +88,7 @@
             {% for design in organism.experimentaldesign_set.all %}
               {{ design.condition_2 }}
             {% endfor %}
-          </td>
+          </td>-->
         </tr>
       {% empty %}
         <tr>

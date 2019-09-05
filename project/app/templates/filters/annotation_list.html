@@ -12,10 +12,10 @@
     <form method="get">
       <div class="well">
         <div class="row">
-          <!--<div class="form-group col-sm-4 col-md-3">
-            {{ filter.form.organism__taxid.label_tag }}
-            {% render_field filter.form.organism__taxid class="form-control" %}
-          </div>-->
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.organism__scientific_name_with_strain.label_tag }}
+            {% render_field filter.form.organism__scientific_name_with_strain class="form-control" %}
+          </div>
           <div class="form-group col-sm-4 col-md-3">
             {{ filter.form.protein_id.label_tag }}
             {% render_field filter.form.protein_id class="form-control" %}
@@ -46,7 +46,7 @@
     <thead>
       <tr>
         <th>#</th>
-        <!--<th>Organism</th>-->
+        <th>Organism</th>
         <th>Protein ID</th>
         <th>GO ID</th>
         <th>Ontology</th>
@@ -57,7 +57,7 @@
       {% for annotation in filter.qs %}
         <tr>
           <td>{{ forloop.counter }}</td>  
-          <!--<td>{{ gene.organism.taxid }}</td>-->
+          <td>{{ annotation.organism.scientific_name_with_strain }}</td>
           <td>{{ annotation.protein_id }}</td>
           <td>{{ annotation.go_id }}</td>
           <td>{{ annotation.ontology }}</td>

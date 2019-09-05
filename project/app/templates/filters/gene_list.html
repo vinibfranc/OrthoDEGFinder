@@ -12,10 +12,14 @@
     <form method="get">
       <div class="well">
         <div class="row">
-          <!--<div class="form-group col-sm-4 col-md-3">
-            {{ filter.form.organism__taxid.label_tag }}
-            {% render_field filter.form.organism__taxid class="form-control" %}
-          </div>-->
+            <div class="form-group col-sm-4 col-md-3">
+                {{ filter.form.organism__scientific_name_with_strain.label_tag }}
+                {% render_field filter.form.organism__scientific_name_with_strain class="form-control" %}
+              </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.experimental_design__description.label_tag }}
+            {% render_field filter.form.experimental_design__description class="form-control" %}
+          </div>
           <div class="form-group col-sm-4 col-md-3">
             {{ filter.form.de_gene.label_tag }}
             {% render_field filter.form.de_gene class="form-control" %}
@@ -58,7 +62,8 @@
     <thead>
       <tr>
         <th>#</th>
-        <!--<th>Organism</th>-->
+        <th>Organism</th>
+        <th>Design</th>
         <th>DE Gene</th>
         <th>Log FC</th>
         <th>Log CPM</th>
@@ -71,7 +76,8 @@
       {% for gene in filter.qs %}
         <tr>
           <td>{{ forloop.counter }}</td>  
-          <!--<td>{{ gene.organism.taxid }}</td>-->
+          <td>{{ gene.organism.scientific_name_with_strain }}</td>
+          <td>{{ gene.experimental_design.description }}</td>
           <td>{{ gene.de_gene }}</td>
           <td>{{ gene.log_fc }}</td>
           <td>{{ gene.log_cpm }}</td>

@@ -7,9 +7,10 @@ class Organism(models.Model):
     tax_class = models.CharField(max_length=100, verbose_name="Class")
     order = models.CharField(max_length=100)
     family = models.CharField(max_length=100)
-    genus = models.CharField(max_length=100)
-    species = models.CharField(max_length=100)
-    lineage_strain = models.CharField(max_length=100, verbose_name="Lineage/strain")
+    #genus = models.CharField(max_length=100)
+    #species = models.CharField(max_length=100)
+    #lineage_strain = models.CharField(max_length=100, verbose_name="Lineage/strain")
+    scientific_name_with_strain = models.CharField(max_length=300, verbose_name="Scientific name with strain")
     annotation_reference_organism = models.CharField(max_length=300, null=True)
     #real_genes = models.ManyToManyField('RealGene', blank=True, related_name='real_genes')
 
@@ -19,18 +20,21 @@ class Organism(models.Model):
         verbose_name_plural = 'Organisms'
 
     def __str__(self):
-        return self.genus+" "+self.species+" "+self.lineage_strain
+        return self.scientific_name_with_strain
 
 class ExperimentalDesign(models.Model):
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=200, unique=True)
     condition_1 = models.CharField(max_length=20)
     condition_2 = models.CharField(max_length=20)
     replicate_number = models.IntegerField()
-    organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
+    organism = models.ForeignKey('Organism', on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.description
 
 class GeneCorrespondences(models.Model):
-    gene = models.ForeignKey('AnalysisAnnotatedGene', on_delete=models.CASCADE)
-    annotation = models.ForeignKey('Pannzer2Annotation', on_delete=models.CASCADE)
+    gene = models.ForeignKey('AnalysisAnnotatedGene', on_delete=models.CASCADE, null=True)
+    annotation = models.ForeignKey('Pannzer2Annotation', on_delete=models.CASCADE, null=True)
     #organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
 
     class Meta:
@@ -42,6 +46,8 @@ class GeneCorrespondences(models.Model):
         return str(self.gene)
 
 class AnalysisAnnotatedGene(models.Model):
+    organism = models.ForeignKey('Organism', on_delete=models.CASCADE, to_field='taxid', null=True)
+    experimental_design = models.ForeignKey('ExperimentalDesign', on_delete=models.CASCADE, to_field='description', null=True)
     de_gene = models.CharField(max_length=10)
     log_fc = models.FloatField(null=True)
     log_cpm = models.FloatField(null=True)
@@ -64,7 +70,7 @@ class Pannzer2Annotation(models.Model):
     go_id = models.IntegerField()
     ontology = models.CharField(max_length=5)
     description = models.CharField(max_length=200)
-    #organism = models.ForeignKey('Organism', on_delete=models.CASCADE)
+    organism = models.ForeignKey('Organism', on_delete=models.CASCADE, to_field='taxid', null=True)
 
     class Meta:
         ordering = ['description']

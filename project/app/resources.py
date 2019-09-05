@@ -5,7 +5,7 @@ import import_export.admin
 
 class AnalysisAnnotatedGeneResource(resources.ModelResource):
     organism = fields.Field(column_name='organism', attribute='organism', widget=ForeignKeyWidget(Organism, 'taxid'))
-    design = fields.Field(column_name='experimental_design', attribute='experimentaldesign', widget=ForeignKeyWidget(ExperimentalDesign, 'description'))
+    experimental_design = fields.Field(column_name='experimental_design', attribute='experimental_design', widget=ForeignKeyWidget(ExperimentalDesign, 'description'))
     de_gene = fields.Field(column_name='de_gene', attribute='de_gene', widget=CharWidget())
     log_fc = fields.Field(column_name='log_fc', attribute='log_fc', widget=FloatWidget())
     log_cpm = fields.Field(column_name='log_cpm', attribute='log_cpm', widget=FloatWidget())
@@ -17,7 +17,7 @@ class AnalysisAnnotatedGeneResource(resources.ModelResource):
     exclude = ('id',)
     class Meta:
         model = AnalysisAnnotatedGene
-        fields = ('organism', 'design', 'de_gene', 'log_fc', 'log_cpm', 'f', 'p_value', 'fdr', 'id')
+        fields = ('organism', 'experimental_design', 'de_gene', 'log_fc', 'log_cpm', 'f', 'p_value', 'fdr', 'id')
 
 class Pannzer2AnnotationResource(resources.ModelResource):
     organism = fields.Field(column_name='organism', attribute='organism', widget=ForeignKeyWidget(Organism, 'taxid'))

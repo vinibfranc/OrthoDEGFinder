@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from .models import Organism, ExperimentalDesign, AnalysisAnnotatedGene, Pannzer2Annotation, Ortholog, GeneCorrespondences
-from .filters import OrganismFilter, AnalysisAnnotatedGeneFilter, Pannzer2AnnotationFilter, OrthologFilter, UnifiedOrganismFilter, UnifiedGeneFilter, UnifiedAnnotationFilter                                                                                                                        
+from .filters import OrganismDesignFilter, AnalysisAnnotatedGeneFilter, Pannzer2AnnotationFilter, OrthologFilter, UnifiedOrganismFilter, UnifiedGeneFilter, UnifiedAnnotationFilter                                                                                                                        
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def home(request):
     return render(request, 'home.html')
 
 def search_organism(request):
-    organism_list = Organism.objects.all()
-    organism_filter = OrganismFilter(request.GET, queryset=organism_list)
+    organism_list = ExperimentalDesign.objects.all()
+    organism_filter = OrganismDesignFilter(request.GET, queryset=organism_list)
     return render(request, 'filters/organism_list.html', {'filter': organism_filter})
 
 def search_gene(request):

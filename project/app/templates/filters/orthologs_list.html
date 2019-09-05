@@ -20,18 +20,18 @@
             {{ filter.form.orthogroup.label_tag }}
             {% render_field filter.form.orthogroup class="form-control" %}
           </div>
-          <!--<div class="form-group col-sm-4 col-md-3">
-            {{ filter.form.organism_1.label_tag }}
-            {% render_field filter.form.organism_1 class="form-control" %}
-          </div>-->
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.organism_1__scientific_name_with_strain.label_tag }}
+            {% render_field filter.form.organism_1__scientific_name_with_strain class="form-control" %}
+          </div>
           <div class="form-group col-sm-4 col-md-3">
             {{ filter.form.orthologs_organism_1.label_tag }}
             {% render_field filter.form.orthologs_organism_1 class="form-control" %}
           </div>
-          <!--<div class="form-group col-sm-4 col-md-3">
-            {{ filter.form.organism_2.label_tag }}
-            {% render_field filter.form.organism_2 class="form-control" %}
-          </div>-->
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.organism_2__scientific_name_with_strain.label_tag }}
+            {% render_field filter.form.organism_2__scientific_name_with_strain class="form-control" %}
+          </div>
           <div class="form-group col-sm-4 col-md-3">
               {{ filter.form.orthologs_organism_2.label_tag }}
               {% render_field filter.form.orthologs_organism_2 class="form-control" %}
@@ -64,9 +64,9 @@
           <td>{{ forloop.counter }}</td>  
           <!--<td>{{ gene.organism.taxid }}</td>-->
           <td>{{ ortholog.orthogroup }}</td>
-          <td>{{ ortholog.organism_1 }}</td>
+          <td>{{ ortholog.organism_1.scientific_name_with_strain }}</td>
           <td>{{ ortholog.orthologs_organism_1 }}</td>
-          <td>{{ ortholog.organism_2 }}</td>
+          <td>{{ ortholog.organism_2.scientific_name_with_strain }}</td>
           <td>{{ ortholog.orthologs_organism_2 }}</td>
         </tr>
       {% empty %}
