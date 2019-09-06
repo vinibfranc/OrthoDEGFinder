@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid" style="padding: 2em;">
+  <h4 class="display-4">Unified search</h4>
+  <!--<p class="lead">...</p>-->
+</div>
+<div class="container">
+  <div class="row">
+    <form method="get">
+      <div class="well">
+        <div class="row">
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.gene__de_gene.label_tag }}
+            {% render_field filter.form.gene__de_gene class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.gene__log_fc.label_tag }}
+            {% render_field filter.form.gene__log_fc class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.gene__p_value.label_tag }}
+            {% render_field filter.form.gene__p_value class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.annotation__protein_id.label_tag }}
+            {% render_field filter.form.annotation__protein_id class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.annotation__go_id.label_tag }}
+              {% render_field filter.form.annotation__go_id class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.annotation__ontology.label_tag }}
+              {% render_field filter.form.annotation__ontology class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.annotation__description.label_tag }}
+              {% render_field filter.form.annotation__description class="form-control" %}
+          </div>
+          
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <span class="fa fa-search"></span> Search
+        </button>
+      </div>
+    </form>
+  </div>
+
+<div class="row">
+  <table class="table table-hover" style="margin-top: 2em;">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Gene</th>
+        <th>Log FC</th>
+        <th>P value</th>
+        <th>Protein ID</th>
+        <th>GO ID</th>
+        <th>Ontology</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for unified in filter.qs %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ unified.gene.de_gene }}</td>
+          <td>{{ unified.gene.log_fc }}</td>
+          <td>{{ unified.gene.p_value }}</td>
+          <td>{{ unified.annotation.protein_id }}</td>
+          <td>{{ unified.annotation.go_id }}</td>
+          <td>{{ unified.annotation.ontology }}</td>
+          <td>{{ unified.annotation.description }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="8">No filtered data</td>
+        </tr>
+      {% endfor %}
+      <td class="bg-primary" colspan="8">{{filter.qs|length}} data found</td>
+    </tbody>
+  </table>
+</div>
+{% endblock %}

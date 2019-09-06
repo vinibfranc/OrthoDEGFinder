@@ -57,14 +57,15 @@ class OrthologFilter(django_filters.FilterSet):
         model = Ortholog
         fields = ['orthogroup', 'organism_1', 'orthologs_organism_1', 'organism_2', 'orthologs_organism_2']
 
-class UnifiedOrganismFilter(django_filters.FilterSet):
-    pass
-
-class UnifiedGeneFilter(django_filters.FilterSet):
-    pass
-
-class UnifiedOrganismFilter(django_filters.FilterSet):
-    pass
-
-class UnifiedAnnotationFilter(django_filters.FilterSet):
-    pass
+class UnifiedFilter(django_filters.FilterSet):
+    gene__de_gene = django_filters.CharFilter(lookup_expr='icontains', label='Gene')
+    gene__log_fc = django_filters.CharFilter(lookup_expr='icontains', label='Log FC')
+    gene__p_value = django_filters.CharFilter(lookup_expr='icontains', label='P Value')
+    annotation__protein_id = django_filters.CharFilter(lookup_expr='icontains', label='Protein ID')
+    annotation__go_id = django_filters.CharFilter(lookup_expr='icontains', label='GO ID')
+    annotation__ontology = django_filters.CharFilter(lookup_expr='icontains', label='Ontology')
+    annotation__description = django_filters.CharFilter(lookup_expr='icontains', label='Description')
+    # TO-DO: relationship between Organism and Ortholog to filter
+    class Meta:
+        model = GeneCorrespondences
+        fields = ['gene__de_gene', 'gene__log_fc', 'gene__p_value', 'annotation__protein_id', 'annotation__go_id', 'annotation__ontology', 'annotation__description']

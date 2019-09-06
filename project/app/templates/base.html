@@ -38,15 +38,8 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'search_orthologs' %}">Orthologs</a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Unified search
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="{% url 'search_unified_organism' %}">Organism</a>
-                    <a class="dropdown-item" href="{% url 'search_unified_gene' %}">Gene</a>
-                    <a class="dropdown-item" href="{% url 'search_unified_annotation' %}">Annotation</a>
-                </div>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'search_unified' %}">Unified search</a>
             </li>
           </ul>
           <!--<form class="form-inline mt-2 mt-md-0">

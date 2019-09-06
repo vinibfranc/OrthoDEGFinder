@@ -1,5 +1,6 @@
 #encoding: utf-8
 
+import urllib3
 from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
 from app.models import AnalysisAnnotatedGene, Pannzer2Annotation, GeneCorrespondences
@@ -12,6 +13,7 @@ class Command(BaseCommand):
     def map_genes_to_annotation(self):
 
         Entrez.email = "viniciusfr@ufcspa.edu.br"
+        Entrez.api_key = "e8515ac4bfc635f5afc2d74d8ad121863008"
 
         print("Mapping protein annotation and genes...")
 
@@ -25,41 +27,45 @@ class Command(BaseCommand):
         locus_tag = []
         pannzer2 = []
 
-        for i in range(len(pannzer2_query)):
-            print("{}: {}".format(i, pannzer2_query[i]))
-            handle = Entrez.efetch(db="protein", id="{}".format(pannzer2_query[i]), idtype="acc", rettype="gb", retmode="text")
-            record = SeqIO.read(handle, "genbank")
-            #print(record)
-            
-            for feats in record.features:
-                if feats.type == "CDS":
-                    gene_list = feats.qualifiers["locus_tag"]
-                    gene = gene_list[0]
-                    #print(gene)
-                    locus_tag.append(gene)
-                    pannzer2.append(pannzer2_query[i])
-            #print(pannzer2)
-            #print(locus_tag)
+        try:
 
-        #locus_tag_set = list(set(locus_tag))
-        #print(len(locus_tag_set))
-        #print(locus_tag_set)
-        relation_dict = dict(zip(pannzer2, locus_tag))
-        print(relation_dict)
-        handle.close()
+            for i in range(len(pannzer2_query)):
+                print("{}: {}".format(i, pannzer2_query[i]))
+                handle = Entrez.efetch(db="protein", id="{}".format(pannzer2_query[i]), idtype="acc", rettype="gb", retmode="text")
+                record = SeqIO.read(handle, "genbank")
+                #print(record)
+                
+                for feats in record.features:
+                    if feats.type == "CDS":
+                        gene_list = feats.qualifiers["locus_tag"]
+                        gene = gene_list[0]
+                        #print(gene)
+                        locus_tag.append(gene)
+                        pannzer2.append(pannzer2_query[i])
+                #print(pannzer2)
+                #print(locus_tag)
 
-        id_corresp = 0
-        for k, v in relation_dict.items():
-            try:
-                annot = Pannzer2Annotation.objects.filter(protein_id__iexact=str(k))[:1].get()
-                gene_c = AnalysisAnnotatedGene.objects.get(de_gene__iexact=str(v))
-                gene_create = GeneCorrespondences.objects.create(gene=gene_c, annotation=annot)
-                print(gene_create)
-                gene_create.save()
-                id_corresp += 1
-                print(id_corresp)
-            except (ValueError, AnalysisAnnotatedGene.DoesNotExist) as e:
-                pass
+            #locus_tag_set = list(set(locus_tag))
+            #print(len(locus_tag_set))
+            #print(locus_tag_set)
+            relation_dict = dict(zip(pannzer2, locus_tag))
+            print(relation_dict)
+            handle.close()
+
+            id_corresp = 0
+            for k, v in relation_dict.items():
+                try:
+                    annot = Pannzer2Annotation.objects.filter(protein_id__iexact=str(k))[:1].get()
+                    gene_c = AnalysisAnnotatedGene.objects.get(de_gene__iexact=str(v))
+                    gene_create = GeneCorrespondences.objects.create(gene=gene_c, annotation=annot)
+                    print(gene_create)
+                    gene_create.save()
+                    id_corresp += 1
+                    print(id_corresp)
+                except (ValueError, AnalysisAnnotatedGene.DoesNotExist) as e:
+                    pass
+        except urllib3.exceptions.HTTPError:
+            print("Catch it")
 
     def handle(self, *args, **options):
         self.map_genes_to_annotation()
