@@ -44,9 +44,6 @@ class AnalysisAnnotatedGeneAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('de_gene', 'log_fc', 'p_value')
     resource_class = AnalysisAnnotatedGeneResource
 
-    #def organism__name(self, obj):
-        #return str(obj.organism.genus+" "+obj.organism.species+" "+obj.organism.lineage_strain)
-
 @admin.register(Pannzer2Annotation)
 class Pannzer2AnnotationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('protein_id', 'go_id', 'ontology', 'description', 'organism')
@@ -57,9 +54,3 @@ class Pannzer2AnnotationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 class OrthologAdmin(admin.ModelAdmin):
     list_display = ('orthogroup', 'organism_1', 'orthologs_organism_1', 'organism_2', 'orthologs_organism_2')
     search_fields = ('orthogroup', 'orthologs_organism_1', 'orthologs_organism_2')
-
-    # def organism_1_name(self, obj):
-    #     return str(obj.scientific_name_with_strain)
-    
-    # def organism_2_name(self, obj):
-    #     return str(obj.scientific_name_with_strain)

@@ -8,43 +8,6 @@ from django.views.generic import ListView
 def home(request):
     return render(request, 'home.html')
 
-# class PaginatedFilterViews(View):
-#     def get_context_data(self, **kwargs):
-#         context = super(PaginatedFilterViews, self).get_context_data(**kwargs)
-#         if self.request.GET:
-#             querystring = self.request.GET.copy()
-#             if self.request.GET.get('page'):
-#                 del querystring['page']
-#             context['querystring'] = querystring.urlencode()
-#         return context
-
-# class OrganismListFilter(ListView):
-#     model = ExperimentalDesign
-#     template_name = 'filters/organism_list.html'
-#     context_object_name = 'organisms' 
-#     paginate_by = 25
-#     queryset = OrganismDesignFilter(request.GET, queryset=ExperimentalDesign.objects.all()).qs
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['filter'] = OrganismListFilter(self.request.GET, queryset=self.get_queryset())
-    #     return context
-    # def get_queryset(self):
-    #     return OrganismDesignFilter(self.request.GET, queryset=ExperimentalDesign.objects.all()).qs
-
-# def do_paginate(data_list, page_number):
-#     ret_data_list = data_list
-#     result_per_page = 25
-#     paginator = Paginator(data_list, result_per_page)
-#     try:
-#         ret_data_list = paginator.page(page_number)
-#     except EmptyPage:
-#         ret_data_list = paginator.page(paginator.num_pages)
-#     except PageNotAnInteger:
-#         ret_data_list = paginator.page(1)
-    
-#     return [ret_data_list, paginator]
-
 def search_organism(request):
     organism_list = ExperimentalDesign.objects.all()
     organism_filter = OrganismDesignFilter(request.GET, queryset=organism_list)

@@ -58,6 +58,9 @@ class OrthologFilter(django_filters.FilterSet):
         fields = ['orthogroup', 'organism_1', 'orthologs_organism_1', 'organism_2', 'orthologs_organism_2']
 
 class UnifiedFilter(django_filters.FilterSet):
+    organism__organism__taxid = django_filters.CharFilter(lookup_expr='icontains', label='TaxID')
+    organism__organism__scientific_name_with_strain = django_filters.CharFilter(lookup_expr='icontains', label='Organism')
+    organism__description = django_filters.CharFilter(lookup_expr='icontains', label='Design description')
     gene__de_gene = django_filters.CharFilter(lookup_expr='icontains', label='Gene')
     gene__log_fc = django_filters.CharFilter(lookup_expr='icontains', label='Log FC')
     gene__p_value = django_filters.CharFilter(lookup_expr='icontains', label='P Value')

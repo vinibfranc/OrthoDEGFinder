@@ -13,6 +13,20 @@
       <div class="well">
         <div class="row">
           <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.organism__organism__taxid.label_tag }}
+            {% render_field filter.form.organism__organism__taxid class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.organism__organism__scientific_name_with_strain.label_tag }}
+            {% render_field filter.form.organism__organism__scientific_name_with_strain class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.organism__description.label_tag }}
+            {% render_field filter.form.organism__description class="form-control" %}
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-sm-4 col-md-3">
             {{ filter.form.gene__de_gene.label_tag }}
             {% render_field filter.form.gene__de_gene class="form-control" %}
           </div>
@@ -24,6 +38,8 @@
             {{ filter.form.gene__p_value.label_tag }}
             {% render_field filter.form.gene__p_value class="form-control" %}
           </div>
+        </div>
+        <div class="row">
           <div class="form-group col-sm-4 col-md-3">
             {{ filter.form.annotation__protein_id.label_tag }}
             {% render_field filter.form.annotation__protein_id class="form-control" %}
@@ -40,7 +56,6 @@
               {{ filter.form.annotation__description.label_tag }}
               {% render_field filter.form.annotation__description class="form-control" %}
           </div>
-          
         </div>
         <button type="submit" class="btn btn-primary">
           <span class="fa fa-search"></span> Search
@@ -54,6 +69,8 @@
     <thead>
       <tr>
         <th>#</th>
+        <th>Organism</th>
+        <th>Design description</th>
         <th>Gene</th>
         <th>Log FC</th>
         <th>P value</th>
@@ -67,6 +84,8 @@
       {% for unified in filter.qs %}
         <tr>
           <td>{{ forloop.counter }}</td>
+          <td>{{ unified.organism.organism.scientific_name_with_strain }}</td>
+          <td>{{ unified.organism.description }}</td>
           <td>{{ unified.gene.de_gene }}</td>
           <td>{{ unified.gene.log_fc }}</td>
           <td>{{ unified.gene.p_value }}</td>
@@ -77,10 +96,10 @@
         </tr>
       {% empty %}
         <tr>
-          <td colspan="8">No filtered data</td>
+          <td colspan="10">No filtered data</td>
         </tr>
       {% endfor %}
-      <td class="bg-primary" colspan="8">{{filter.qs|length}} data found</td>
+      <td class="bg-primary" colspan="10">{{filter.qs|length}} data found</td>
     </tbody>
   </table>
 </div>
