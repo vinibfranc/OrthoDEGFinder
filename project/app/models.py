@@ -29,18 +29,21 @@ class ExperimentalDesign(models.Model):
         return self.description
 
 class GeneCorrespondences(models.Model):
-    gene = models.ForeignKey('AnalysisAnnotatedGene', on_delete=models.CASCADE, null=True)
-    annotation = models.ForeignKey('Pannzer2Annotation', on_delete=models.CASCADE, null=True)
-    organism = models.ForeignKey('ExperimentalDesign', on_delete=models.CASCADE, null=True)
-    ortholog = models.ForeignKey('Ortholog', on_delete=models.CASCADE, null=True)
+    organism_1 = models.ForeignKey('Organism', related_name='org_1', on_delete=models.CASCADE, null=True)
+    organism_2 = models.ForeignKey('Organism', related_name='org_2', on_delete=models.CASCADE, null=True)
+    design = models.ForeignKey('ExperimentalDesign', on_delete=models.CASCADE, null=True)
+    gene_organism_1 = models.ForeignKey('AnalysisAnnotatedGene', related_name='gene_1', on_delete=models.CASCADE, null=True)
+    gene_organism_2 = models.ForeignKey('AnalysisAnnotatedGene', related_name='gene_2', on_delete=models.CASCADE, null=True)
+    protein_organism_1 = models.ForeignKey('Ortholog', related_name='protein_1', on_delete=models.CASCADE, null=True)
+    protein_organism_2 = models.ForeignKey('Ortholog', related_name='protein_2', on_delete=models.CASCADE, null=True)
 
     class Meta:
-        ordering = ['gene']
+        #ordering = ['gene']
         verbose_name = 'Gene correspondences'
         verbose_name_plural = 'Gene correspondences'
 
     def __str__(self):
-        return str(self.gene)
+        return str(self.gene_organism_1)
 
 class AnalysisAnnotatedGene(models.Model):
     organism = models.ForeignKey('Organism', on_delete=models.CASCADE, to_field='taxid', null=True)
@@ -78,9 +81,9 @@ class Pannzer2Annotation(models.Model):
 class Ortholog(models.Model):
     orthogroup = models.CharField(max_length=20)
     organism_1 = models.ForeignKey('Organism', on_delete=models.CASCADE, related_name='organism_1', null=True)
-    orthologs_organism_1 = models.CharField(max_length=500)
+    orthologs_organism_1 = models.ForeignKey('Pannzer2Annotation', on_delete=models.CASCADE, related_name='ortholog_1', null=True)
     organism_2 = models.ForeignKey('Organism', on_delete=models.CASCADE, related_name='organism_2', null=True)
-    orthologs_organism_2 = models.CharField(max_length=500)
+    orthologs_organism_2 = models.ForeignKey('Pannzer2Annotation', on_delete=models.CASCADE, related_name='ortholog_2', null=True)
 
     class Meta:
         ordering = ['orthogroup']

@@ -3,10 +3,15 @@
 import urllib3
 from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
-from app.models import ExperimentalDesign, AnalysisAnnotatedGene, Pannzer2Annotation, GeneCorrespondences, Ortholog
+from app.models import Organism, ExperimentalDesign, AnalysisAnnotatedGene, Pannzer2Annotation, GeneCorrespondences, Ortholog
 from Bio import Entrez, SeqIO
 import sys
 import os
+
+# Change here the organisms taxids and the comrresponding design if you have others to compare
+ORGANISM_1 = 1276135
+ORGANISM_2 = 655844
+EXP_DESIGN = "infect48hXinfect144h"
 
 class Command(BaseCommand):
 
@@ -17,44 +22,55 @@ class Command(BaseCommand):
 
         print("Mapping protein annotation and genes...")
 
-        pannzer2_query = set(Pannzer2Annotation.objects.all().values_list("protein_id", "organism__taxid"))
-        print(pannzer2_query)
-        pannzer2_dict = dict(pannzer2_query)
-        print(pannzer2_dict)
-        print("Annotations to be searched against NCBI Gene: {}".format(len(pannzer2_query)))
+        org1_query = list(Ortholog.objects.all().values_list("organism_1__taxid", flat=True))
+        ortho1_query = list(Ortholog.objects.all().values_list("orthologs_organism_1__protein_id", flat=True))
+        org2_query = list(Ortholog.objects.all().values_list("organism_2__taxid", flat=True))
+        ortho2_query = list(Ortholog.objects.all().values_list("orthologs_organism_2__protein_id", flat=True))
+        print(ortho1_query)
+        print(ortho2_query)
 
-        de_genes_query = AnalysisAnnotatedGene.objects.all().values_list("de_gene", "organism__taxid")
-        print(de_genes_query)
-        de_genes_dict = dict(de_genes_query)
-        print(de_genes_dict)
+        print("Annotations to be searched against NCBI Gene to Organism 1: {}".format(len(ortho1_query)))
 
         idx = 0
         try:
-            for key, value in pannzer2_dict.items():
-                print("{}: {} -> {}".format(idx, key, value))
-                handle = Entrez.efetch(db="protein", id="{}".format(key), idtype="acc", rettype="gb", retmode="text")
-                record = SeqIO.read(handle, "genbank")
+            for a, b, c, d in zip(org1_query, ortho1_query, org2_query, ortho2_query):
+                print("{}: {} <-> {}".format(idx, b, d))
+                handle_1 = Entrez.efetch(db="protein", id="{}".format(b), idtype="acc", rettype="gb", retmode="text")
+                record_1 = SeqIO.read(handle_1, "genbank")
+                handle_2 = Entrez.efetch(db="protein", id="{}".format(d), idtype="acc", rettype="gb", retmode="text")
+                record_2 = SeqIO.read(handle_2, "genbank")
                 idx += 1
 
                 try:
-                    for feats in record.features:
-                        if feats.type == "CDS":
-                            gene_list = feats.qualifiers["locus_tag"]
-                            gene = gene_list[0]
-                            print(gene)
-                            gene_c = AnalysisAnnotatedGene.objects.get(de_gene__iexact=gene)
-                            annot = Pannzer2Annotation.objects.filter(protein_id__iexact=str(key))[:1].get()
-                            # if(Ortholog.objects.filter(orthologs_organism_1__iexact=str(key))[:1].get() == Pannzer2Annotation.objects.filter(protein_id__iexact=str(key))[:1].get()):
-                            #     ortho = Ortholog.objects.filter(orthologs_organism_2__iexact=str(key))[:1].get()
-                            # elif(Ortholog.objects.filter(orthologs_organism_2__iexact=str(key))[:1].get() == Pannzer2Annotation.objects.filter(protein_id__iexact=str(key))[:1].get()):
-                            #     ortho = Ortholog.objects.filter(orthologs_organism_1__iexact=str(key))[:1].get()
-                            # else:
-                            #     print("Entrou aqui!")
-                            #     pass
-                            organism_c = ExperimentalDesign.objects.get(organism__taxid__iexact=int(value))
-                            gene_create = GeneCorrespondences.objects.create(gene=gene_c, annotation=annot, organism=organism_c)#, ortholog=ortho)
-                            gene_create.save()
-                except (AnalysisAnnotatedGene.DoesNotExist) as e:
+                    for feats_1, feats_2 in zip(record_1.features, record_2.features):
+                        if feats_1.type == "CDS" or feats_2.type == "CDS":
+                            gene_list_1 = feats_1.qualifiers["locus_tag"]
+                            gene_1 = gene_list_1[0]
+                            print(gene_1)
+                            gene_list_2 = feats_2.qualifiers["locus_tag"]
+                            gene_2 = gene_list_2[0]
+                            print(gene_2)
+                            org_1 = Organism.objects.get(taxid__iexact=a)
+                            org_2 = Organism.objects.get(taxid__iexact=c)
+                            design = ExperimentalDesign.objects.get(description__iexact=EXP_DESIGN)
+                            # annot_1 = Pannzer2Annotation.objects.filter(protein_id__iexact=b)[:1].get()
+                            # annot_2 = Pannzer2Annotation.objects.filter(protein_id__iexact=d)[:1].get()
+                            protein_organism_1 = Ortholog.objects.get(orthologs_organism_1__protein_id__iexact=b)
+                            protein_organism_2 = Ortholog.objects.get(orthologs_organism_2__protein_id__iexact=d)
+                            gene_organism_1 = AnalysisAnnotatedGene.objects.get(de_gene__iexact=gene_1)
+                            print("---------> Gene", gene_organism_1)
+                            print(gene_organism_1)
+                            try:
+                                gene_organism_2 = AnalysisAnnotatedGene.objects.get(de_gene__iexact=gene_2)
+                            except AnalysisAnnotatedGene.DoesNotExist:
+                                gene_organism_2 = AnalysisAnnotatedGene.objects.create(de_gene=gene_2)
+                                gene_organism_2.save()
+                            
+                            corresp_object = GeneCorrespondences.objects.create(organism_1=org_1, organism_2=org_2, design=design, 
+                                                                                gene_organism_1=gene_organism_1, gene_organism_2=gene_organism_2, 
+                                                                                protein_organism_1=protein_organism_1, protein_organism_2=protein_organism_2)
+                            corresp_object.save()
+                except (KeyError, Pannzer2Annotation.DoesNotExist, AnalysisAnnotatedGene.DoesNotExist, Ortholog.DoesNotExist) as e:
                     pass 
         except urllib3.exceptions.HTTPError as e:
             pass

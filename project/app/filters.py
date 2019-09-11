@@ -50,17 +50,17 @@ class Pannzer2AnnotationFilter(django_filters.FilterSet):
 class OrthologFilter(django_filters.FilterSet):
     orthogroup = django_filters.CharFilter(lookup_expr='icontains', label='Orthogroup')
     organism_1__scientific_name_with_strain = django_filters.CharFilter(lookup_expr='icontains', label='Organism 1')
-    orthologs_organism_1 = django_filters.CharFilter(lookup_expr='icontains', label='Ortholog organism 1')
+    ortholog_1__orthologs_organism_1 = django_filters.CharFilter(lookup_expr='icontains', label='Ortholog organism 1')
     organism_2__scientific_name_with_strain = django_filters.CharFilter(lookup_expr='icontains', label='Organism 2')
-    orthologs_organism_2 = django_filters.CharFilter(lookup_expr='icontains', label='Ortholog organism 2')
+    ortholog_2__orthologs_organism_2 = django_filters.CharFilter(lookup_expr='icontains', label='Ortholog organism 2')
     class Meta:
         model = Ortholog
-        fields = ['orthogroup', 'organism_1', 'orthologs_organism_1', 'organism_2', 'orthologs_organism_2']
+        fields = ['orthogroup', 'organism_1', 'ortholog_1__orthologs_organism_1', 'organism_2', 'ortholog_2__orthologs_organism_2']
 
 class UnifiedFilter(django_filters.FilterSet):
-    organism__organism__taxid = django_filters.CharFilter(lookup_expr='icontains', label='TaxID')
-    organism__organism__scientific_name_with_strain = django_filters.CharFilter(lookup_expr='icontains', label='Organism')
-    organism__description = django_filters.CharFilter(lookup_expr='icontains', label='Design description')
+    # organism__organism__taxid = django_filters.CharFilter(lookup_expr='icontains', label='TaxID')
+    # organism__organism__scientific_name_with_strain = django_filters.CharFilter(lookup_expr='icontains', label='Organism')
+    # organism__description = django_filters.CharFilter(lookup_expr='icontains', label='Design description')
     gene__de_gene = django_filters.CharFilter(lookup_expr='icontains', label='Gene')
     gene__log_fc = django_filters.CharFilter(lookup_expr='icontains', label='Log FC')
     gene__p_value = django_filters.CharFilter(lookup_expr='icontains', label='P Value')

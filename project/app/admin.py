@@ -23,20 +23,22 @@ admin.site.register(Organism, OrganismAdmin)
 
 @admin.register(GeneCorrespondences)
 class GeneCorrespondencesAdmin(admin.ModelAdmin):
-    list_display = ('de_genes', 'protein_ids', 'functional_annotation_count')
+    # TO-DO
+    pass
+    # list_display = ('de_genes', 'protein_ids', 'functional_annotation_count')
 
-    def de_genes(self, obj):
-        qs = AnalysisAnnotatedGene.objects.filter(de_gene=obj.gene).values('de_gene').order_by('de_gene')
-        qs_str = ', '.join([str(qs[i]['de_gene']) for i,c in enumerate(qs)])
-        return qs_str
+    # def de_genes(self, obj):
+    #     qs = AnalysisAnnotatedGene.objects.filter(de_gene=obj.gene).values('de_gene').order_by('de_gene')
+    #     qs_str = ', '.join([str(qs[i]['de_gene']) for i,c in enumerate(qs)])
+    #     return qs_str
         
-    def protein_ids(self, obj):
-        qs = Pannzer2Annotation.objects.filter(protein_id=obj.annotation).first()
-        return qs
+    # def protein_ids(self, obj):
+    #     qs = Pannzer2Annotation.objects.filter(protein_id=obj.annotation).first()
+    #     return qs
 
-    def functional_annotation_count(self, obj):
-        qs = Pannzer2Annotation.objects.filter(protein_id=obj.annotation).count()
-        return qs
+    # def functional_annotation_count(self, obj):
+    #     qs = Pannzer2Annotation.objects.filter(protein_id=obj.annotation).count()
+    #     return qs
 
 @admin.register(AnalysisAnnotatedGene)
 class AnalysisAnnotatedGeneAdmin(ImportExportModelAdmin, admin.ModelAdmin):

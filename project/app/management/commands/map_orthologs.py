@@ -1,7 +1,7 @@
 #encoding: utf-8
 
 from django.core.management.base import BaseCommand
-from app.models import Ortholog, Organism
+from app.models import Ortholog, Organism, Pannzer2Annotation
 import sys
 import os
 import csv
@@ -23,18 +23,22 @@ class Command(BaseCommand):
                 print(org_1)
                 print(org_2)
 
-                print(row)
+                try:
+                    annot_1 = Pannzer2Annotation.objects.filter(protein_id__iexact=str(row[3]))[:1].get()
+                    annot_2 = Pannzer2Annotation.objects.filter(protein_id__iexact=str(row[4]))[:1].get()
 
-                ortholog = Ortholog.objects.create(pk=id_ortho,orthogroup=str(row[2]), organism_1=org_1, 
-                            orthologs_organism_1=str(row[3]), organism_2=org_2, 
-                            orthologs_organism_2=str(row[4]))
-                ortholog.save()
-                #except (ValueError):
-                        #pass
-                id_ortho += 1
+                    print(row)
+
+                    id_ortho += 1
+
+                    ortholog = Ortholog.objects.create(pk=id_ortho, orthogroup=str(row[2]), organism_1=org_1, 
+                                orthologs_organism_1=annot_1, organism_2=org_2, 
+                                orthologs_organism_2=annot_2)
+                    ortholog.save()
+                except (Pannzer2Annotation.DoesNotExist):
+                    pass
 
     def handle(self, *args, **options):
-        #self.map_orthologs()
         self.csv_to_orthologs()
 
 def main():
