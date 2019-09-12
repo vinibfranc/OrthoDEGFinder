@@ -34,8 +34,8 @@ class GeneCorrespondences(models.Model):
     design = models.ForeignKey('ExperimentalDesign', on_delete=models.CASCADE, null=True)
     gene_organism_1 = models.ForeignKey('AnalysisAnnotatedGene', related_name='gene_1', on_delete=models.CASCADE, null=True)
     gene_organism_2 = models.ForeignKey('AnalysisAnnotatedGene', related_name='gene_2', on_delete=models.CASCADE, null=True)
-    protein_organism_1 = models.ForeignKey('Ortholog', related_name='protein_1', on_delete=models.CASCADE, null=True)
-    protein_organism_2 = models.ForeignKey('Ortholog', related_name='protein_2', on_delete=models.CASCADE, null=True)
+    protein_organism_1 = models.ForeignKey('Pannzer2Annotation', related_name='protein_1', on_delete=models.CASCADE, null=True)
+    protein_organism_2 = models.ForeignKey('Pannzer2Annotation', related_name='protein_2', on_delete=models.CASCADE, null=True)
 
     class Meta:
         #ordering = ['gene']

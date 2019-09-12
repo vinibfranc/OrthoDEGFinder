@@ -11,7 +11,7 @@ class OrganismDesignFilter(django_filters.FilterSet):
     organism__kingdom = django_filters.CharFilter(lookup_expr='iexact', label='Kingdom')
     organism__scientific_name_with_strain = django_filters.CharFilter(lookup_expr='icontains', label='Organism')
     organism__annotation_reference_organism = django_filters.CharFilter(lookup_expr='icontains', label='Reference annotation')
-    description = django_filters.CharFilter(lookup_expr='icontains', label='Experimental design')
+    description = django_filters.CharFilter(lookup_expr='icontains', label='Exp. design')
     condition_1 = django_filters.CharFilter(lookup_expr='icontains', label='Condition 1')
     condition_2 = django_filters.CharFilter(lookup_expr='icontains', label='Condition 2')
     class Meta:
@@ -20,7 +20,7 @@ class OrganismDesignFilter(django_filters.FilterSet):
                     'description', 'condition_1', 'condition_2']
 
 class AnalysisAnnotatedGeneFilter(django_filters.FilterSet):
-    experimental_design__description = django_filters.CharFilter(lookup_expr='icontains', label='Design')
+    experimental_design__description = django_filters.CharFilter(lookup_expr='icontains', label='Exp. Design')
     organism__scientific_name_with_strain = django_filters.CharFilter(lookup_expr='icontains', label='Organism')
     de_gene = django_filters.CharFilter(lookup_expr='icontains', label='DE Gene')
     log_fc = django_filters.NumberFilter(lookup_expr='startswith', label='Log FC')
@@ -58,17 +58,23 @@ class OrthologFilter(django_filters.FilterSet):
         fields = ['orthogroup', 'organism_1', 'ortholog_1__orthologs_organism_1', 'organism_2', 'ortholog_2__orthologs_organism_2']
 
 class UnifiedFilter(django_filters.FilterSet):
-    # organism__organism__taxid = django_filters.CharFilter(lookup_expr='icontains', label='TaxID')
-    # organism__organism__scientific_name_with_strain = django_filters.CharFilter(lookup_expr='icontains', label='Organism')
-    # organism__description = django_filters.CharFilter(lookup_expr='icontains', label='Design description')
-    gene__de_gene = django_filters.CharFilter(lookup_expr='icontains', label='Gene')
-    gene__log_fc = django_filters.CharFilter(lookup_expr='icontains', label='Log FC')
-    gene__p_value = django_filters.CharFilter(lookup_expr='icontains', label='P Value')
-    annotation__protein_id = django_filters.CharFilter(lookup_expr='icontains', label='Protein ID')
-    annotation__go_id = django_filters.CharFilter(lookup_expr='icontains', label='GO ID')
-    annotation__ontology = django_filters.CharFilter(lookup_expr='icontains', label='Ontology')
-    annotation__description = django_filters.CharFilter(lookup_expr='icontains', label='Description')
-    # TO-DO: relationship between Organism and Ortholog to filter
+    organism_1__scientific_name_with_strain = django_filters.CharFilter(lookup_expr='icontains', label='Organism 1')
+    organism_2__scientific_name_with_strain = django_filters.CharFilter(lookup_expr='icontains', label='Organism 2')
+    design__description = django_filters.CharFilter(lookup_expr='icontains', label='Design description')
+    gene_organism_1__de_gene = django_filters.CharFilter(lookup_expr='icontains', label='Gene 1')
+    gene_organism_2__de_gene = django_filters.CharFilter(lookup_expr='icontains', label='Gene 2')
+    gene_organism_1__log_fc = django_filters.CharFilter(lookup_expr='icontains', label='Log FC')
+    gene_organism_1__p_value = django_filters.CharFilter(lookup_expr='icontains', label='P Value')
+    protein_organism_1__protein_id = django_filters.CharFilter(lookup_expr='icontains', label='Protein 1')
+    protein_organism_2__protein_id = django_filters.CharFilter(lookup_expr='icontains', label='Protein 2')
+    protein_organism_1__go_id = django_filters.CharFilter(lookup_expr='icontains', label='GO ID')
+    protein_organism_1__ontology = django_filters.CharFilter(lookup_expr='icontains', label='Ontology')
+    protein_organism_1__description = django_filters.CharFilter(lookup_expr='icontains', label='Description')
+    
     class Meta:
         model = GeneCorrespondences
-        fields = ['gene__de_gene', 'gene__log_fc', 'gene__p_value', 'annotation__protein_id', 'annotation__go_id', 'annotation__ontology', 'annotation__description']
+        fields = ['organism_1__scientific_name_with_strain', 'organism_2__scientific_name_with_strain', 
+                    'design__description', 'gene_organism_1__de_gene', 'gene_organism_2__de_gene', 
+                    'gene_organism_1__log_fc', 'gene_organism_1__p_value', 'protein_organism_1__protein_id', 
+                    'protein_organism_2__protein_id', 'protein_organism_1__go_id', 'protein_organism_1__ontology', 
+                    'protein_organism_1__description']

@@ -55,14 +55,15 @@ class Command(BaseCommand):
                             design = ExperimentalDesign.objects.get(description__iexact=EXP_DESIGN)
                             # annot_1 = Pannzer2Annotation.objects.filter(protein_id__iexact=b)[:1].get()
                             # annot_2 = Pannzer2Annotation.objects.filter(protein_id__iexact=d)[:1].get()
-                            protein_organism_1 = Ortholog.objects.get(orthologs_organism_1__protein_id__iexact=b)
-                            protein_organism_2 = Ortholog.objects.get(orthologs_organism_2__protein_id__iexact=d)
+                            protein_organism_1 = Pannzer2Annotation.objects.filter(protein_id__iexact=b)[:1].get()
+                            protein_organism_2 = Pannzer2Annotation.objects.filter(protein_id__iexact=d)[:1].get()
                             gene_organism_1 = AnalysisAnnotatedGene.objects.get(de_gene__iexact=gene_1)
                             print("---------> Gene", gene_organism_1)
                             print(gene_organism_1)
                             try:
                                 gene_organism_2 = AnalysisAnnotatedGene.objects.get(de_gene__iexact=gene_2)
                             except AnalysisAnnotatedGene.DoesNotExist:
+                                #pass
                                 gene_organism_2 = AnalysisAnnotatedGene.objects.create(de_gene=gene_2)
                                 gene_organism_2.save()
                             
