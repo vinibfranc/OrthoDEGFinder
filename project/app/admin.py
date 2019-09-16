@@ -23,33 +23,26 @@ admin.site.register(Organism, OrganismAdmin)
 
 @admin.register(GeneCorrespondences)
 class GeneCorrespondencesAdmin(admin.ModelAdmin):
-    # TO-DO
-    pass
-    # list_display = ('de_genes', 'protein_ids', 'functional_annotation_count')
+    list_display = ('organism_1', 'organism_2', 'design', 'gene_organism_1', 'gene_organism_2', 
+                    'protein_organism_1', 'protein_organism_2', 'functional_annotation_count')
+    search_fields = ('organism_1__scientific_name_with_strain', 'organism_2__scientific_name_with_strain',
+                    'design__description', 'gene_organism_1__de_gene', 'gene_organism_2__de_gene',
+                    'protein_organism_1__protein_id', 'protein_organism_2__protein_id')
 
-    # def de_genes(self, obj):
-    #     qs = AnalysisAnnotatedGene.objects.filter(de_gene=obj.gene).values('de_gene').order_by('de_gene')
-    #     qs_str = ', '.join([str(qs[i]['de_gene']) for i,c in enumerate(qs)])
-    #     return qs_str
-        
-    # def protein_ids(self, obj):
-    #     qs = Pannzer2Annotation.objects.filter(protein_id=obj.annotation).first()
-    #     return qs
-
-    # def functional_annotation_count(self, obj):
-    #     qs = Pannzer2Annotation.objects.filter(protein_id=obj.annotation).count()
-    #     return qs
+    def functional_annotation_count(self, obj):
+        qs = Pannzer2Annotation.objects.filter(protein_id=obj.protein_organism_1).count()
+        return qs
 
 @admin.register(AnalysisAnnotatedGene)
 class AnalysisAnnotatedGeneAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('de_gene', 'log_fc', 'log_cpm', 'f', 'p_value', 'fdr', 'organism', 'experimental_design')
-    search_fields = ('de_gene', 'log_fc', 'p_value')
+    search_fields = ('de_gene', 'log_fc', 'p_value', 'experimental_design__description')
     resource_class = AnalysisAnnotatedGeneResource
 
 @admin.register(Pannzer2Annotation)
 class Pannzer2AnnotationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('protein_id', 'go_id', 'ontology', 'description', 'organism')
-    search_fields = ('protein_id', 'go_id', 'ontology', 'description')
+    search_fields = ('protein_id', 'go_id', 'ontology', 'description', 'organism__scientific_name_with_strain')
     resource_class = Pannzer2AnnotationResource
 
 @admin.register(Ortholog)

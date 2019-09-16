@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load widget_tweaks %}
+{% load cool_paginate %}
 
 {% block content %}
 <div class="jumbotron jumbotron-fluid" style="padding: 2em;">
@@ -92,7 +93,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for unified in filter.qs %}
+        {% for unified in page_unified %}
           <tr>
             <td>{{ forloop.counter }}</td>
             <td>{{ unified.organism_1.scientific_name_with_strain }}</td>
@@ -116,6 +117,9 @@
         <td class="bg-primary" colspan="13">{{filter.qs|length}} data found</td>
       </tbody>
     </table>
+  </div>
+  <div style="width: 50%; margin: 0 auto;">
+    {% cool_paginate page_obj=page_unified %}
   </div>
 </div>
 {% endblock %}

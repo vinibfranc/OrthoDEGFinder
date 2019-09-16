@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load widget_tweaks %}
+{% load cool_paginate %}
 
 {% block content %}
 <div class="jumbotron jumbotron-fluid" style="padding: 2em;">
@@ -27,12 +28,12 @@
             {% render_field filter.form.orthogroup class="form-control" %}
           </div>
           <div class="form-group col-sm-4 col-md-3 col-lg-4">
-            {{ filter.form.ortholog_1__orthologs_organism_1.label_tag }}
-            {% render_field filter.form.ortholog_1__orthologs_organism_1 class="form-control" %}
+            {{ filter.form.orthologs_organism_1__protein_id.label_tag }}
+            {% render_field filter.form.orthologs_organism_1__protein_id class="form-control" %}
           </div>
           <div class="form-group col-sm-4 col-md-3 col-lg-4">
-              {{ filter.form.ortholog_2__orthologs_organism_2.label_tag }}
-              {% render_field filter.form.ortholog_2__orthologs_organism_2 class="form-control" %}
+              {{ filter.form.orthologs_organism_2__protein_id.label_tag }}
+              {% render_field filter.form.orthologs_organism_2__protein_id class="form-control" %}
           </div>
           
         </div>
@@ -56,7 +57,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for ortholog in filter.qs %}
+      {% for ortholog in page_orthologs %}
         <tr>
           <td>{{ forloop.counter }}</td>
           <td>{{ ortholog.orthogroup }}</td>
@@ -73,5 +74,8 @@
       <td class="bg-primary" colspan="6">{{filter.qs|length}} organism(s) found</td>
     </tbody>
   </table>
+  <div style="width: 50%; margin: 0 auto;">
+    {% cool_paginate page_obj=page_orthologs %}
+  </div>
 </div>
 {% endblock %}

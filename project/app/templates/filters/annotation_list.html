@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load widget_tweaks %}
+{% load cool_paginate %}
 
 {% block content %}
 <div class="jumbotron jumbotron-fluid" style="padding: 2em;">
@@ -54,7 +55,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for annotation in filter.qs %}
+      {% for annotation in page_annotation %}
         <tr>
           <td>{{ forloop.counter }}</td>  
           <td>{{ annotation.organism.scientific_name_with_strain }}</td>
@@ -71,5 +72,8 @@
       <td class="bg-primary" colspan="6">{{filter.qs|length}} annotation(s) found</td>
     </tbody>
   </table>
+  <div style="width: 50%; margin: 0 auto;">
+    {% cool_paginate page_obj=page_annotation %}
+  </div>
 </div>
 {% endblock %}

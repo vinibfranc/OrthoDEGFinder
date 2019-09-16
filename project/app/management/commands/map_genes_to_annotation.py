@@ -44,34 +44,43 @@ class Command(BaseCommand):
                 try:
                     for feats_1, feats_2 in zip(record_1.features, record_2.features):
                         if feats_1.type == "CDS" or feats_2.type == "CDS":
-                            gene_list_1 = feats_1.qualifiers["locus_tag"]
-                            gene_1 = gene_list_1[0]
-                            print(gene_1)
-                            gene_list_2 = feats_2.qualifiers["locus_tag"]
-                            gene_2 = gene_list_2[0]
-                            print(gene_2)
-                            org_1 = Organism.objects.get(taxid__iexact=a)
-                            org_2 = Organism.objects.get(taxid__iexact=c)
-                            design = ExperimentalDesign.objects.get(description__iexact=EXP_DESIGN)
-                            # annot_1 = Pannzer2Annotation.objects.filter(protein_id__iexact=b)[:1].get()
-                            # annot_2 = Pannzer2Annotation.objects.filter(protein_id__iexact=d)[:1].get()
-                            protein_organism_1 = Pannzer2Annotation.objects.filter(protein_id__iexact=b)[:1].get()
-                            protein_organism_2 = Pannzer2Annotation.objects.filter(protein_id__iexact=d)[:1].get()
-                            gene_organism_1 = AnalysisAnnotatedGene.objects.get(de_gene__iexact=gene_1)
-                            print("---------> Gene", gene_organism_1)
-                            print(gene_organism_1)
-                            try:
-                                gene_organism_2 = AnalysisAnnotatedGene.objects.get(de_gene__iexact=gene_2)
-                            except AnalysisAnnotatedGene.DoesNotExist:
-                                #pass
-                                gene_organism_2 = AnalysisAnnotatedGene.objects.create(de_gene=gene_2)
-                                gene_organism_2.save()
-                            
-                            corresp_object = GeneCorrespondences.objects.create(organism_1=org_1, organism_2=org_2, design=design, 
-                                                                                gene_organism_1=gene_organism_1, gene_organism_2=gene_organism_2, 
-                                                                                protein_organism_1=protein_organism_1, protein_organism_2=protein_organism_2)
-                            corresp_object.save()
-                except (KeyError, Pannzer2Annotation.DoesNotExist, AnalysisAnnotatedGene.DoesNotExist, Ortholog.DoesNotExist) as e:
+                            protein_organism_1_list = list(Pannzer2Annotation.objects.filter(protein_id__iexact=b).values_list("protein_id", flat=True))
+                            print(protein_organism_1_list)
+                            protein_organism_2_list = list(Pannzer2Annotation.objects.filter(protein_id__iexact=d).values_list("protein_id", flat=True))
+                            print(protein_organism_2_list)
+                            for x in range(len(protein_organism_1_list)):
+                                # for annot_1, annot_2 in zip(protein_organism_1_list, protein_organism_2_list):
+                                gene_list_1 = feats_1.qualifiers["locus_tag"]
+                                gene_1 = gene_list_1[0]
+                                print(gene_1)
+                                gene_list_2 = feats_2.qualifiers["locus_tag"]
+                                gene_2 = gene_list_2[0]
+                                print(gene_2)
+                                org_1 = Organism.objects.get(taxid__iexact=a)
+                                org_2 = Organism.objects.get(taxid__iexact=c)
+                                design = ExperimentalDesign.objects.get(description__iexact=EXP_DESIGN)
+                                prot_1 = Pannzer2Annotation.objects.filter(protein_id__iexact=b)
+                                protein_organism_1 = []
+                                for item_1 in prot_1.iterator():
+                                    protein_organism_1.append(item_1)
+                                prot_2 = Pannzer2Annotation.objects.filter(protein_id__iexact=d)
+                                protein_organism_2 = []
+                                for item_2 in prot_2.iterator():
+                                    protein_organism_2.append(item_2)
+                                gene_organism_1 = AnalysisAnnotatedGene.objects.get(de_gene__iexact=gene_1)
+                                print("---------> Gene", gene_organism_1)
+                                print(gene_organism_1)
+                                try:
+                                    gene_organism_2 = AnalysisAnnotatedGene.objects.get(de_gene__iexact=gene_2)
+                                except AnalysisAnnotatedGene.DoesNotExist:
+                                    gene_organism_2 = AnalysisAnnotatedGene.objects.create(de_gene=gene_2)
+                                    gene_organism_2.save()
+                                
+                                corresp_object = GeneCorrespondences.objects.create(organism_1=org_1, organism_2=org_2, design=design, 
+                                                                                    gene_organism_1=gene_organism_1, gene_organism_2=gene_organism_2, 
+                                                                                    protein_organism_1=protein_organism_1[x], protein_organism_2=protein_organism_2[x])
+                                corresp_object.save()
+                except (KeyError, IndexError, Pannzer2Annotation.DoesNotExist, AnalysisAnnotatedGene.DoesNotExist, Ortholog.DoesNotExist) as e:
                     pass 
         except urllib3.exceptions.HTTPError as e:
             pass

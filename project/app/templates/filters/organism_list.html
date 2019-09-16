@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+
 {% load widget_tweaks %}
+{% load cool_paginate %}
 
 {% block content %}
 <div class="jumbotron jumbotron-fluid" style="padding: 2em;">
@@ -65,7 +67,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for org in filter.qs %}
+      {% for org in page_organism %}
         <tr>
           <td>{{ forloop.counter }}</td>  
           <td>{{ org.organism.taxid }}</td>
@@ -84,6 +86,8 @@
       <td class="bg-primary" colspan="8">{{filter.qs|length}} organism(s) found</td>
     </tbody>
   </table>
-  
+  <div style="width: 50%; margin: 0 auto;">
+    {% cool_paginate page_obj=page_organism %}
+  </div>
 </div>
 {% endblock %}

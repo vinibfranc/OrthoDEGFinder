@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load widget_tweaks %}
+{% load cool_paginate %}
 
 {% block content %}
 <div class="jumbotron jumbotron-fluid" style="padding: 2em;">
@@ -46,11 +47,6 @@
               {{ filter.form.fdr.label_tag }}
               {% render_field filter.form.fdr class="form-control" %}
           </div>
-          <!--<div class="form-group col-sm-4 col-md-3">
-              {{ filter.form.log_fc_ordering.label_tag }}
-              {% render_field filter.form.log_fc_ordering class="form-control" %}
-          </div>-->
-          
         </div>
         <button type="submit" class="btn btn-primary">
           <span class="fa fa-search"></span> Search
@@ -75,7 +71,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for gene in filter.qs %}
+      {% for gene in page_gene %}
         <tr>
           <td>{{ forloop.counter }}</td>  
           <td>{{ gene.organism.scientific_name_with_strain }}</td>
@@ -95,5 +91,8 @@
       <td class="bg-primary" colspan="9">{{filter.qs|length}} gene(s) found</td>
     </tbody>
   </table>
+  <div style="width: 50%; margin: 0 auto;">
+    {% cool_paginate page_obj=page_gene %}
+  </div>
 </div>
 {% endblock %}
