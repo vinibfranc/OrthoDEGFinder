@@ -54,6 +54,7 @@ class AnalysisAnnotatedGene(models.Model):
     f = models.FloatField(null=True)
     p_value = models.FloatField(null=True)
     fdr = models.FloatField(null=True)
+    real_differential_expression = models.BooleanField()
 
     class Meta:
         ordering = ['log_fc', '-p_value', 'de_gene']
@@ -65,7 +66,7 @@ class AnalysisAnnotatedGene(models.Model):
 
 class Pannzer2Annotation(models.Model):
     protein_id = models.CharField(max_length=20)
-    go_id = models.IntegerField()
+    go_id = models.CharField(max_length=20)
     ontology = models.CharField(max_length=5)
     description = models.CharField(max_length=200)
     organism = models.ForeignKey('Organism', on_delete=models.CASCADE, to_field='taxid', null=True)

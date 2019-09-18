@@ -61,19 +61,22 @@ class Command(BaseCommand):
                                 design = ExperimentalDesign.objects.get(description__iexact=EXP_DESIGN)
                                 prot_1 = Pannzer2Annotation.objects.filter(protein_id__iexact=b)
                                 protein_organism_1 = []
-                                for item_1 in prot_1.iterator():
-                                    protein_organism_1.append(item_1)
+                                for annot_1 in prot_1.iterator():
+                                    protein_organism_1.append(annot_1)
                                 prot_2 = Pannzer2Annotation.objects.filter(protein_id__iexact=d)
                                 protein_organism_2 = []
-                                for item_2 in prot_2.iterator():
-                                    protein_organism_2.append(item_2)
+                                for annot_2 in prot_2.iterator():
+                                    protein_organism_2.append(annot_2)
                                 gene_organism_1 = AnalysisAnnotatedGene.objects.get(de_gene__iexact=gene_1)
                                 print("---------> Gene", gene_organism_1)
                                 print(gene_organism_1)
                                 try:
                                     gene_organism_2 = AnalysisAnnotatedGene.objects.get(de_gene__iexact=gene_2)
                                 except AnalysisAnnotatedGene.DoesNotExist:
-                                    gene_organism_2 = AnalysisAnnotatedGene.objects.create(de_gene=gene_2)
+                                    gene_organism_2 = AnalysisAnnotatedGene.objects.create(organism=org_2, experimental_design=design, 
+                                                                                            de_gene=gene_2, log_fc=gene_organism_1.log_fc, 
+                                                                                            log_cpm=gene_organism_1.log_cpm, p_value=gene_organism_1.p_value, 
+                                                                                            fdr=gene_organism_1.fdr, real_differential_expression=False)
                                     gene_organism_2.save()
                                 
                                 corresp_object = GeneCorrespondences.objects.create(organism_1=org_1, organism_2=org_2, design=design, 

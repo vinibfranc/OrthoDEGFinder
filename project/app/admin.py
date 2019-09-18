@@ -35,8 +35,8 @@ class GeneCorrespondencesAdmin(admin.ModelAdmin):
 
 @admin.register(AnalysisAnnotatedGene)
 class AnalysisAnnotatedGeneAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('de_gene', 'log_fc', 'log_cpm', 'f', 'p_value', 'fdr', 'organism', 'experimental_design')
-    search_fields = ('de_gene', 'log_fc', 'p_value', 'experimental_design__description')
+    list_display = ('de_gene', 'log_fc', 'log_cpm', 'f', 'p_value', 'fdr', 'organism', 'experimental_design', 'real_differential_expression')
+    search_fields = ('de_gene', 'log_fc', 'p_value', 'experimental_design__description', 'real_differential_expression')
     resource_class = AnalysisAnnotatedGeneResource
 
 @admin.register(Pannzer2Annotation)
