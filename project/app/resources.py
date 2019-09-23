@@ -25,7 +25,7 @@ class Pannzer2AnnotationResource(resources.ModelResource):
     protein_id = fields.Field(column_name='protein_id', attribute='protein_id', widget=CharWidget())
     go_id = fields.Field(column_name='go_id', attribute='go_id', widget=CharWidget())
     ontology = fields.Field(column_name='ontology', attribute='ontology', widget=CharWidget())
-    description = fields.Field(column_name='ontology', attribute='ontology', widget=CharWidget())
+    description = fields.Field(column_name='description', attribute='description', widget=CharWidget())
     skip_unchanged = True
     report_skipped = True
     exclude = ('id',)

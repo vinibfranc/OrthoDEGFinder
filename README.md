@@ -1,5 +1,4 @@
 # OrthoDEGFinder
-Find correspondent genes between species based on DEG data, functional annotation and orthology
 
 OrthoDEGFinder é uma aplicação Web desenvolvida em Python/Django, na qual são correlacionadas informações de genes em diferentes espécies com base em dados de expressão diferencial, anotação funcional e ortologia.
 
@@ -148,7 +147,7 @@ Pronto! Todas as configurações foram feitas e o sistema já pode ser acessado.
 (venv) $ python3 manage.py createsuperuser
 ```
 
-Após, basta logar com as credenciais na página ```http://127.0.0.1:8000/admin``.
+Após, basta logar com as credenciais na página [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin).
 
 -------------------------------
 
@@ -160,14 +159,14 @@ Como estamos em ambiente de desenvolvimento, possivelmente o sistema ainda não 
 
 Algumas informações são inseridas manualmente na página admin (necessário ter superusuário criado), outras por planilhas e outras por scripts. O fluxo de inserção deve seguir a seguinte ordem:
 
-1. **Inserção de Organisms**: Acessar a página ```http://127.0.0.1:8000/admin/app/organism/``` e ir em ```Add organism```. Abaixo um exemplo da adição do fungo Metarhizium anisopliae E6. É muito importante que seja adicionado o ID taxonômico do organismo, que pode ser encontrado no [NCBI Taxonomy Browser](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi). Também deverá ser inserido o organismo ao qual a expressão diferencial será inferida com base na ortologia, podendo deixar o ExperimentalDesign em branco.
+1. **Inserção de Organisms**: Acessar a página [http://127.0.0.1:8000/admin/app/organism/](http://127.0.0.1:8000/admin/app/organism/) e ir em ```Add organism```. Abaixo um exemplo da adição do fungo Metarhizium anisopliae E6. É muito importante que seja adicionado o ID taxonômico do organismo, que pode ser encontrado no [NCBI Taxonomy Browser](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi). Também deverá ser inserido o organismo ao qual a expressão diferencial será inferida com base na ortologia, podendo deixar o ExperimentalDesign em branco.
 
-![Adição de organismos](https://drive.google.com/drive/folders/1ZVSSfrqcUwhJDmH-iuhKdyW5WvCdIi0y)
+![Adicionando organismos](https://drive.google.com/uc?export=view&id=1ZVSSfrqcUwhJDmH-iuhKdyW5WvCdIi0y)
 
 
 2. **Carregamento de planilhas**: A organização das informações de expressão diferencial e anotação funcional é feita através de planilhas geradas pelos programas utilizados em: [https://github.com/vinibfranc/InternshipDEAnalysis](https://github.com/vinibfranc/InternshipDEAnalysis), algumas delas modificadas para atenderem às nossas necessidades. Os arquivos exemplo também se encontram em ```OrthoDEGFinder/project/app/files_to_upload```.
 
-    2.1. **Analysis Annotated Genes**: Arquivo CSV com genes diferencialmente expressos gerados pelo [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html). Esse arquivo pode ser gerado pelo [pipeline](https://github.com/vinibfranc/InternshipDEAnalysis) e deve ser modificado para ficar igual ao [exemplo](https://docs.google.com/spreadsheets/d/1becN_2aQjFlYFa4kuTLfdw8WsuufuTCpGdZtX7jREFE/edit#gid=1182937593), com o ID taxonômico do organismo e com a descrição do design experimental adicionados anteriormente, e com a mudança na penúltima e última colunas. Para adicionar esses dados basta entrar em ```http://127.0.0.1:8000/admin/app/analysisannotatedgene/``` -> ```Import``` -> Selecione o arquivo -> Selecione o formato CSV -> Submit -> Confirm import. O processo de importação deve levar alguns minutos.
+    2.1. **Analysis Annotated Genes**: Arquivo CSV com genes diferencialmente expressos gerados pelo [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html). Esse arquivo pode ser gerado pelo [pipeline](https://github.com/vinibfranc/InternshipDEAnalysis) e deve ser modificado para ficar igual ao [exemplo](https://docs.google.com/spreadsheets/d/1becN_2aQjFlYFa4kuTLfdw8WsuufuTCpGdZtX7jREFE/edit#gid=1182937593), com o ID taxonômico do organismo e com a descrição do design experimental adicionados anteriormente, e com a mudança na penúltima e última colunas. Para adicionar esses dados basta entrar em [http://127.0.0.1:8000/admin/app/analysisannotatedgene/](http://127.0.0.1:8000/admin/app/analysisannotatedgene/) -> ```Import``` -> Selecione o arquivo -> Selecione o formato CSV -> Submit -> Confirm import. O processo de importação deve levar alguns minutos.
 
     2.2. **Pannzer2 Functional annotations**: Arquivo TSV com anotações funcionais geradas pelo [Pannzer 2](http://ekhidna2.biocenter.helsinki.fi/sanspanz/). Esse arquivo corresponde ao arquivo ```GO.out``` gerado no web server do Pannzer2 após a submissão da sequência de proteínas e o recebimento dos resultados por e-mail. Ele deve ser modificado para ficar igual ao [exemplo1](https://docs.google.com/spreadsheets/d/1QphqjliTIOuA4vpy0m5HeVjyzGrKk4K3N1Edkfo1ztY/edit#gid=1479770010) e [exemplo2](https://docs.google.com/spreadsheets/d/1-_AtCoVQVnaIz9T-OhG9WK1RSVg6nZc9_g1NqgM4SqM/edit#gid=1080685024), com o ID taxonômico do organismo, a coluna de id em branco e alterando a ordem dos campos go_id e ontology. Para adicionar o ```GO:``` basta rodar o seguinte comando e remover ```GO:``` da primeira linha da coluna go_id (Os arquivos da pasta files_to_upload já foram convertidos e estão prontos para serem inseridos):
 
@@ -176,11 +175,11 @@ Algumas informações são inseridas manualmente na página admin (necessário t
     $ awk -F'\t' -vOFS='\t' '{ $4 = "GO:" $4 }1' anotacao_robertsii_arsef_23.tsv > anotacao_robertsii_arsef_23_formatted.tsv
     ```
     
-    Agora, adicionamos esses dados, um para cada organismo, entrando em ```http://127.0.0.1:8000/admin/app/pannzer2annotation/``` -> ```Import``` -> Selecione o arquivo -> Selecione o formato TSV -> Submit -> Confirm import. O processo de importação deve levar alguns minutos pois são muitas linhas de dados.
+    Agora, adicionamos esses dados, um para cada organismo, entrando em [http://127.0.0.1:8000/admin/app/pannzer2annotation/](http://127.0.0.1:8000/admin/app/pannzer2annotation/) -> ```Import``` -> Selecione o arquivo -> Selecione o formato TSV -> Submit -> Confirm import. O processo de importação deve levar alguns minutos pois são muitas linhas de dados.
 
 3. **Execução de scripts**: Os dados de ortologia e correspondência de genes e proteínas entre as espécies são inseridos via script. Os arquivos exemplo também se encontram em ```OrthoDEGFinder/project/app/orthologs```.
 
-    3.1. **Orthologs**: Arquivo TSV com dados de ortologia gerados pelo [OrthoFinder](https://github.com/davidemms/OrthoFinder). Esse arquivo pode ser gerado pelo [pipeline](https://github.com/vinibfranc/InternshipDEAnalysis) e corresponde ao arquivo ```proteins/OrthoFinder/Results/Orthogroups/Orthogroups_SingleCopyOrthologues.txt``` gerado no OrthoFinder. Após, podem ser rodados os seguintes comandos para extrair os ortólogos Single_copy: 
+    3.1. **Orthologs**: Arquivo TSV com dados de ortologia gerados pelo [OrthoFinder](https://github.com/davidemms/OrthoFinder). Esse arquivo pode ser gerado pelo [pipeline](https://github.com/vinibfranc/InternshipDEAnalysis) e corresponde ao arquivo ```proteins/OrthoFinder/Results/Orthogroups/Orthogroups_SingleCopyOrthologues.txt``` gerado no OrthoFinder. Após, podem ser rodados os seguintes comandos para extrair os ortólogos single copy: 
     
     ```
     $ cd proteins/OrthoFinder/Results/Orthogroups
@@ -189,7 +188,7 @@ Algumas informações são inseridas manualmente na página admin (necessário t
     $ awk -v OFS="\t" '$1=$1' OrthologsIDS_2.txt > OrthologsIDS_done.txt
     ```
 
-    Com isso, devem ser adicionados os IDs taxonômicos dos dois organismos na primeira e segunda linha, sendo que o organismo da coluna 1 corresponde à proteína da coluna 4 e o organismo da coluna 2 corresponde ao organismo da coluna 5. O arquivo resultante deverá possuir a seguinte estrutura: [arquivo](https://docs.google.com/spreadsheets/d/1s52zQ-uXLLxDFo3SsByvX4Tam6goyZCpPQ1nZb28ubY/edit#gid=1745020920).
+    Com isso, devem ser adicionados os IDs taxonômicos dos dois organismos na primeira e segunda coluna, sendo que o organismo da coluna 1 corresponde à proteína da coluna 4 e o organismo da coluna 2 corresponde ao organismo da coluna 5. O arquivo resultante deverá possuir a seguinte estrutura: [arquivo](https://docs.google.com/spreadsheets/d/1s52zQ-uXLLxDFo3SsByvX4Tam6goyZCpPQ1nZb28ubY/edit#gid=1745020920).
 
     Caso queira mudar o arquivo a ser lido pelo programa basta alterar a linha 14 do script ```map_orthologs.py``` contido na pasta ```OrthoDEGFinder/project/app/management/commands```.
     
@@ -221,6 +220,6 @@ Existem 5 tipos de filtragens (com várias opções de campos de filtragem), sen
 
 ---------------------
 
-Desenvolvido por Vinícius Franceschi em [UBTEC](https://www.facebook.com/ubtec.ufrgs/) - [CBiot](http://www.cbiot.ufrgs.br/) - UFRGS.
+Desenvolvido por Vinícius Franceschi em [UBTEC](https://www.facebook.com/ubtec.ufrgs/) - [CBiot](http://www.cbiot.ufrgs.br/) - [UFRGS](http://www.ufrgs.br/ufrgs/inicial).
 
 Dúvidas, problemas ou sugestões de melhorias podem ser enviadas para: vinibfranc@gmail.com
