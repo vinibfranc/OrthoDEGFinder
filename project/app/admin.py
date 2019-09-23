@@ -3,8 +3,8 @@ from import_export.admin import ImportExportModelAdmin
 from .models import Organism, AnalysisAnnotatedGene, Pannzer2Annotation, ExperimentalDesign, Ortholog, GeneCorrespondences
 from .resources import AnalysisAnnotatedGeneResource, Pannzer2AnnotationResource
 
-admin.site.site_header = 'Fungi Orthologs DE Platform'
-admin.site.site_title = 'Fungi Orthologs DE Platform'
+admin.site.site_header = 'Ortho DEG Finder'
+admin.site.site_title = 'Ortho DEG Finder'
 
 class InLineExperimentalDesign(admin.StackedInline):
     model = ExperimentalDesign

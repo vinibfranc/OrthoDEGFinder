@@ -92,15 +92,15 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'OPTIONS': {
-#             'init_command': 'SET foreign_key_checks = 0;',
-#             'read_default_file': '/etc/mysql/my.cnf',
-#         },
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'init_command': 'SET foreign_key_checks = 0;',
+            'read_default_file': '/etc/mysql/my.cnf',
+        },
+    }
+}
 
 
 # Password validation
