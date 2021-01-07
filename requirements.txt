@@ -14,7 +14,7 @@ et-xmlfile==1.0.1
 eutils==0.5.2
 idna==2.8
 jdcal==1.4.1
-lxml==4.4.1
+lxml==4.6.2
 mysqlclient==1.4.4
 numpy==1.17.1
 odfpy==1.4.0
